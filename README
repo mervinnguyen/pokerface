@@ -1,1 +1,13 @@
 # GIT HAS BEEN SET UP
+# Pokerface v2024.04.29
+# **Authors**: Mharlo Borromeo, Jack Lu, Calvin Nguyen, Mervin Nguyen, Peter Nguyen, Derek Tang
+#
+# **Last modified**: 20 May 2024
+#
+# **How to install**: Please look at INSTALL file for detailed instructions on how to install and run the program. 
+# Download .tar, unpack/extract using gtar, navigate to 'bin' directory within Linux, run executable by using './pokerface' command. 
+#
+# ### Developer's notes: How to Tar
+# tar -zcvf Poker_Alpha.tar.gz ./doc/README ./doc/COPYRIGHT ./bin/Chess ./doc/Chess_UserManual.pdf ./doc/INSTALL ./Makefile 
+# tar -zcvf Poker_Alpha_src.tar.gz ./doc ./bin ./src ./Makefile
+#
