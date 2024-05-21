@@ -9,7 +9,7 @@ make:
 	cp src/Server bin/
 
 test:
-	(cd src/; make unitTest1; ;cd ..)
+	(cd src/; make unitTest1; cd ..)
 	(cd src/; make unitTest2; cd ..)
 	cp unitTest1 bin/
 	cp unitTest2 bin/
