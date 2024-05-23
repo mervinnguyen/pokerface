@@ -2,30 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-<<<<<<< HEAD
-typedef struct {
-    int rank;
-    int suit;
-}Card;
-
-typedef struct {
-    Card card hand[5];
-}Hand;
-
-typedef struct {
-    struct Card cards[NUM_CARDS];
-    int top;
-}Deck;
-
-typedef struct {
-    sttuct Card hand[CARDS_PER_PLAYER];
-}Player;
-
-int CheckRoyalFlush(){
-
-}
-
-=======
 #define NUM_CARDS 52
 #define CARDS_PER_PLAYER 2
 
@@ -123,7 +99,6 @@ int CheckRoyalFlush(){
 }
 
 
->>>>>>> afdb0fd2490946ec64216adcc465c192cc8cd540
 int CheckStraightFlush(){
 
 }
