@@ -4,6 +4,7 @@
 
 #define NUM_CARDS 52
 #define CARDS_PER_PLAYER 2
+#define NUM_RANKS 13
 
 typedef enum{
     SPADES = 0,
@@ -35,7 +36,7 @@ typedef struct {
 }Card;
 
 typedef struct {
-	struct Card hand[5];
+	struct Card cards[5];
 }Hand;
 
 typedef struct {
@@ -50,13 +51,10 @@ typedef struct {
 
 void makeDeck(Card *deck) 
 {
-    int count = 0;
-    for (int suit = 0; suit < 4; suit++)
+    int i = 0;
+    for (i = 0; i < NUM_CARDS; i++)
     {
-        for (int rank = 0; rank < 13; rank++)
-        {
-            print("Hello World");
-        }
+        deck[i] = malloc(sizeof(struct Card));  
     }
 }
 
