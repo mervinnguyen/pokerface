@@ -48,20 +48,20 @@ static void button1_clicked(GtkWidget *widget, gpointer data)
 int main (int argc, char *argv[])
 {
 	// GTK Variables
-	GtkWidget *window;					// Main window
-	GtkWidget *vbox_main_menu;			// Allignment
-	GtkWidget *label_main_menu;			// Main Menu Label
-	GtkWidget *tablealign;				// Alignment for Username/Password table
-	GtkWidget *table_main_menu;			// Table Allignment
-	GtkWidget *label_username;			// Username Label
-	GtkWidget *label_password;			// Password Label
-	GtkWidget *entry_username;			// Entry textbox for username
-	GtkWidget *entry_password;			// Entry textbox for password
-	GtkWidget *comboalign;				// Alignment for dropdown selection
-	GtkWidget *combo_seat_dropdown;		// Dropdown text selection for seat number
-	GtkWidget *buttonalign;				// Alignment for the play button
-	GtkWidget *button_play;				// Play button
-	GdkPixbuf *pokerIcon;
+	GtkWidget *window = NULL;					// Main window
+	GtkWidget *vbox_main_menu = NULL;			// Allignment
+	GtkWidget *label_main_menu = NULL;			// Main Menu Label
+	GtkWidget *tablealign = NULL;				// Alignment for Username/Password table
+	GtkWidget *table_main_menu = NULL;			// Table Allignment
+	GtkWidget *label_username = NULL;			// Username Label
+	GtkWidget *label_password = NULL;			// Password Label
+	GtkWidget *entry_username = NULL;			// Entry textbox for username
+	GtkWidget *entry_password = NULL;			// Entry textbox for password
+	GtkWidget *comboalign = NULL;				// Alignment for dropdown selection
+	GtkWidget *combo_seat_dropdown = NULL;		// Dropdown text selection for seat number
+	GtkWidget *buttonalign = NULL;				// Alignment for the play button
+	GtkWidget *button_play = NULL;				// Play button
+	GdkPixbuf *pokerIcon = NULL;
 	int state = 0;
 	char seat[] = "Seat _";
 	printf("state: %d\n",state);
