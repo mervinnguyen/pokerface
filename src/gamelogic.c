@@ -47,15 +47,15 @@ typedef struct {
 	struct Card hand[CARDS_PER_PLAYER];
 }Player;
 
-
-void makeDeck(Card *deck) 
-{
+void makeDeck(Deck *deck){
     int count = 0;
     for (int suit = 0; suit < 4; suit++)
     {
-        for (int rank = 0; rank < 13; rank++)
+        for (int rank = 2; rank < 15; rank++)
         {
-            print("Hello World");
+            deck->cards[count].suit = suit;
+            deck->cards[count].rank = rank;
+            count++;
         }
     }
 }
