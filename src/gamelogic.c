@@ -48,10 +48,6 @@ typedef struct {
 }Card;
 
 typedef struct {
-	struct Card hand[5];
-}Hand;
-
-typedef struct {
 	struct Card cards[NUM_CARDS];
 	int top;
 }Deck;
@@ -95,6 +91,7 @@ typedef struct {
     int numAllIn;
     Player players[7];
     Deck shuffleDeck;
+    Deck communityCards;
 }Game;
 
 void makeDeck(Deck *deck){
@@ -110,79 +107,420 @@ void makeDeck(Deck *deck){
     }
 }
 
-int CheckPlayer(){
+int CheckPlayer(Game *game, int player){
     int priority;
-    if(CheckRoyalFlush() == 1){
+    if(CheckRoyalFlush(game, player) == 1){
         priority = 10;
     }
-    else if(CheckStraightFlush() == 1){
+    else if(CheckStraightFlush(game, player) == 1){
         priority = 9;
     }
-    else if(CheckFourOfAKind() == 1){
+    else if(CheckFourOfAKind(game, player) == 1){
         priority = 8;
     }
-    else if(CheckFullHouse() == 1){
+    else if(CheckFullHouse(game, player) == 1){
         priority = 7;
     }
-    else if(CheckFlush() == 1){
+    else if(CheckFlush(game, player) == 1){
         priority = 6;
     }
-    else if(CheckStraight() == 1){
+    else if(CheckStraight(game, player) == 1){
         priority = 5;
     }
-    else if(CheckThreeOfAKind() == 1){
+    else if(CheckThreeOfAKind(game, player) == 1){
         priority = 4;
     }
-    else if(CheckTwoPair() == 1){
+    else if(CheckTwoPair(game, player) == 1){
         priority = 3;
     }
-    else if(CheckPair() == 1){
+    else if(CheckPair(game, player) == 1){
         priority = 2;
     }
     else{
-        priority = 1;
+        priority = CheckHighCard(game, player);
+    }
+
+    return priority;
+}
+
+int CheckRoyalFlush(Game *game, int player){
+    Deck NewDeck;
+    int i = 0;
+}
+
+
+int CheckStraightFlush(Game *game, int player){
+    Deck NewDeck;
+    int i = 0;
+
+}
+
+int CheckFourOfAKind(Game *game, int player){
+    Deck *NewDeck;
+    int a, b, c, d, e, f, g;
+    for (i=0; i<5; i++){
+        NewDeck->cards[i] = game->communityCards.cards[i];
+    }
+    NewDeck->cards[5] = game->players[player].card1;
+    NewDeck->cards[6] = game->players[player].card2;
+
+    NewDeck = SortbyRank(NewDeck);
+
+    a = NewDeck->cards[0].RANK;
+    b = NewDeck->cards[1].RANK;
+    c = NewDeck->cards[2].RANK;
+    d = NewDeck->cards[3].RANK;
+    e = NewDeck->cards[4].RANK;
+    f = NewDeck->cards[5].RANK;
+    g = NewDeck->cards[6].RANK;
+
+    if ((a == b && b == c && c == d) || (b == c && c == d && d == e) || (c == d && d == e && e == f) || (d == e && e == f && f == g)){
+        return 1;
+    }
+    else{
+        return 0;
     }
 }
 
-int CheckRoyalFlush(){
+int CheckFullHouse(Game *game, int player){
+    if (CheckThreeOfAKind(game, player) == 1 && CheckPair(game, player) == 1){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int CheckFlush(Game *game, int player){
+    DECK *NewDeck;
+    int a, b, c, d, e, f, g;
+    for (i=0; i<5; i++){
+        NewDeck->cards[i] = game->communityCards.cards[i];
+    }
+    NewDeck->cards[5] = game->players[player].card1;
+    NewDeck->cards[6] = game->players[player].card2;
+
+    NewDeck = SortbySuit(NewDeck);
+
+    a = NewDeck->cards[0].SUIT;
+    b = NewDeck->cards[1].SUIT;
+    c = NewDeck->cards[2].SUIT;
+    d = NewDeck->cards[3].SUIT;
+    e = NewDeck->cards[4].SUIT;
+    f = NewDeck->cards[5].SUIT;
+    g = NewDeck->cards[6].SUIT;
+
+    if ((a == b && b == c && c == d && d == e) || (b == c && c == d && d == e && e == f) || (c == d && d == e && e == f && f == g)){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int CheckStraight(Game *game, int player){
+    Deck *NewDeck;
+    int a, b, c, d, e, f, g;
+    for (i=0; i<5; i++){
+        NewDeck->cards[i] = game->communityCards.cards[i];
+    }
+    NewDeck->cards[5] = game->players[player].card1;
+    NewDeck->cards[6] = game->players[player].card2;
+
+    NewDeck = SortbyRank(NewDeck);
+
+    a = NewDeck->cards[0].RANK;
+    b = NewDeck->cards[1].RANK;
+    c = NewDeck->cards[2].RANK;
+    d = NewDeck->cards[3].RANK;
+    e = NewDeck->cards[4].RANK;
+    f = NewDeck->cards[5].RANK;
+    g = NewDeck->cards[6].RANK;
+
+    if ((e == d+1 && d == c+1 && c == b+1 && b == a+1) || (f == e+1 && e == d+1 && d == c+1 && c == b+1) || (g == f+1 && f == e+1 && e == d+1 && d == c+1)){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int CheckThreeOfAKind(Game *game, int player){
+    Deck *NewDeck;
+    int a, b, c, d, e, f, g;
+    for (i=0; i<5; i++){
+        NewDeck->cards[i] = game->communityCards.cards[i];
+    }
+    NewDeck->cards[5] = game->players[player].card1;
+    NewDeck->cards[6] = game->players[player].card2;
+
+    NewDeck = SortbyRank(NewDeck);
+
+    a = NewDeck->cards[0].RANK;
+    b = NewDeck->cards[1].RANK;
+    c = NewDeck->cards[2].RANK;
+    d = NewDeck->cards[3].RANK;
+    e = NewDeck->cards[4].RANK;
+    f = NewDeck->cards[5].RANK;
+    g = NewDeck->cards[6].RANK;
+
+//add more conditionals
+    if ((a == b && b == c) || (b == c && c == d) || (c == d && d == e) || (d == e && e == f) || (e == f && f == g)){
+        return 1;
+    }
+    if ((a == b && b == d) || (b == c && c == e) || (c == d && d == f) || (d == e && e == g)){
+        return 1;
+    }
+    if ((a == b && b == e) || (b == c && c == f) || (c == d && d == g)){
+        return 1;
+    }
+    if ((a == b && b == f) || (b == c && c == g)){
+        return 1;
+    }
+    if (a == b && b == g){
+        return 1;
+    }
+    if (a == c && c == d){
+        return 1;
+    }
+    if (a == c && c == e){
+        return 1;
+    }
+    if (a == c && c == f){
+        return 1;
+    }
+    if (a == c && c == g){
+        return 1;
+    }
+    if (a == d && d == e){
+        return 1;
+    }
+    if (a == d && d == f){
+        return 1;
+    }
+    if (a == d && d == g){
+        return 1;
+    }
+    if (a == e && e == f){
+        return 1;
+    }
+    if (a == e && e == g){
+        return 1;
+    }
+    if (a == f && f == g){
+        return 1;
+    }
+    if (b == c && c == d){
+        return 1;
+    }
+    if (b == c && c == e){
+        return 1;
+    }
+
+    else{
+        return 0;
+    }
+}
+
+int CheckTwoPair(Game *game, int player){
+    Deck *NewDeck;
+    int a, b, c, d, e, f, g;
+        for (i=0; i<5; i++){
+            NewDeck->cards[i] = game->communityCards.cards[i];
+        }
     
+        //this is the player's hand
+        NewDeck->cards[5] = game->players[player].card1;
+        NewDeck->cards[6] = game->players[player].card2;
+    
+        //sort the deck by rank
+        NewDeck = SortbyRank(NewDeck);
+    
+        a = NewDeck->cards[0].RANK;
+        b = NewDeck->cards[1].RANK;
+        c = NewDeck->cards[2].RANK;
+        d = NewDeck->cards[3].RANK;
+        e = NewDeck->cards[4].RANK;
+        f = NewDeck->cards[5].RANK;
+        g = NewDeck->cards[6].RANK;
+
+        //write if statements for all ways that the a-g can have two pairs
+        if ( a == b && ( c == d || d == e || e == f || f == g || c == e || c == f || c == g || d == f || d == g || e == g)){
+            return 1;
+        }
+        else if ( b == c && ( d == e || e == f || f == g || d == f || d == g || e == g || a == d || a == e || a == f || a == g)){
+            return 1;
+        }
+        else if ( c == d && ( e == f || f == g || e == g || a == e || a == f || a == g || b == e || b == f || b == g || b == d)){
+            return 1;
+        }
+        else if ( d == e && ( f == g || f == a || f == b || f == c || a == c || a == f || a == g)){
+            return 1;
+        }
+        else if ( e == f && ( g == f || )){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+}
+
+int CheckPair(Game *game, int player){
+    Deck *NewDeck;
+    int a, b, c, d, e, f, g;
+
+    for (i=0; i<5; i++){
+        NewDeck->cards[i] = game->communityCards.cards[i];
+    }
+
+    //this is the player's hand
+    NewDeck->cards[5] = game->players[player].card1;
+    NewDeck->cards[6] = game->players[player].card2;
+
+    //sort the deck by rank
+    NewDeck = SortbyRank(NewDeck);
+
+    a = NewDeck->cards[0].RANK;
+    b = NewDeck->cards[1].RANK;
+    c = NewDeck->cards[2].RANK;
+    d = NewDeck->cards[3].RANK;
+    e = NewDeck->cards[4].RANK;
+    f = NewDeck->cards[5].RANK;
+    g = NewDeck->cards[6].RANK;
+
+    //check if the player has a pair
+    if (a == b || a == c || a == d || a == e || a == f || a == g){
+        return 1;
+    }
+    else if (b == c || b == d || b == e || b == f || b == g){
+        return 1;
+    }
+    else if (c == d || c == e || c == f || c == g){
+        return 1;
+    }
+    else if (d == e || d == f || d == g){
+        return 1;
+    }
+    else if (e == f || e == g){
+        return 1;
+    }
+    else if (f == g){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int CheckHighCard(Game *game, int player){
+    Deck *NewDeck;
+    int a, b, c, d, e, f, g, h;
+    for (i=0; i<5; i++){
+        NewDeck->cards[i] = game->communityCards.cards[i];
+    }
+    
+    //this is the player's hand
+    NewDeck->cards[5] = game->players[player].card1;
+    NewDeck->cards[6] = game->players[player].card2;
+
+    //sort the deck by rank
+    NewDeck = SortbyRank(NewDeck);
+
+    a = NewDeck->cards[0].RANK;
+    b = NewDeck->cards[1].RANK;
+    c = NewDeck->cards[2].RANK;
+    d = NewDeck->cards[3].RANK;
+    e = NewDeck->cards[4].RANK;
+    f = NewDeck->cards[5].RANK;
+    g = NewDeck->cards[6].RANK;
+
+    //check if the player has a high card
+
+    //if f or g is a 2, return 2
+    if (f == 2 || g == 2){
+        return 2;
+    }
+    //if f or g is a 3, return 3
+    else if (f == 3 || g == 3){
+        return 3;
+    }
+    //if f or g is a 4, return 4
+    else if (f == 4 || g == 4){
+        return 4;
+    }
+    //if f or g is a 5, return 5
+    else if (f == 5 || g == 5){
+        return 5;
+    }
+    //if f or g is a 6, return 6
+    else if (f == 6 || g == 6){
+        return 6;
+    }
+    //if f or g is a 7, return 7
+    else if (f == 7 || g == 7){
+        return 7;
+    }
+    //if f or g is a 8, return 8
+    else if (f == 8 || g == 8){
+        return 8;
+    }
+    //if f or g is a 9, return 9
+    else if (f == 9 || g == 9){
+        return 9;
+    }
+    //if f or g is a 10, return 10
+    else if (f == 10 || g == 10){
+        return 10;
+    }
+    //if f or g is a 11, return 11
+    else if (f == 11 || g == 11){
+        return 11;
+    }
+    //if f or g is a 12, return 12
+    else if (f == 12 || g == 12){
+        return 12;
+    }
+    //if f or g is a 13, return 13
+    else if (f == 13 || g == 13){
+        return 13;
+    }
+    //if f or g is a 14, return 14
+    else if (f == 14 || g == 14){
+        return 14;
+    }
 }
 
 
-int CheckStraightFlush(){
-
+//sort rank by rank
+Deck SortbyRank(Deck *D){
+    CARD A;
+    int i, j;
+    for (i=0; i<7; i++){
+        for (j=0; j<7-i-1; j++){
+            if (D->cards[j].rank > D->cards[j+1].rank){
+                A = D->cards[j];
+                D->cards[j] = D->cards[j+1];
+                D->cards[j+1] = A;
+            }
+        }
+    }
+    return A;
 }
 
-int CheckFourOfAKind(){
-
-}
-
-int CheckFullHouse(){
-
-}
-
-int CheckFlush(){
-
-}
-
-int CheckStraight(){
-
-}
-
-int CheckThreeOfAKind(){
-
-}
-
-int CheckTwoPair(){
-
-}
-
-int CheckPair(){
-
-}
-
-int CheckHighCard(){
-
+//Sort by suit
+Deck SortbySuit(Deck *D){
+    CARD A;
+    int i, j;
+    for (i=0; i<7; i++){
+        for (j=0; j<7-i-1; j++){
+            if (D->cards[j].suit > D->cards[j+1].suit){
+                A = D->cards[j];
+                D->cards[j] = D->cards[j+1];
+                D->cards[j+1] = A;
+            }
+        }
+    }
+    return A;
 }
 
 int main(){
