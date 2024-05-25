@@ -12,6 +12,12 @@ https://docs.huihoo.com/gtk/tutorial/2.0/index.html
 https://www.manpagez.com/html/gtk2/gtk2-2.24.29/
 https://docs.gtk.org/gtk3/index.html
 */
+/*
+TODO LIST: (player)
+Create a structure to store the state, vbox containing the entry boxes, char arrays to store the username and password.
+Next expand the structure to accept the combo box, int to store the combo box.
+Expand it so that I'm able to switch between two windows at the click of the button.
+*/
 
 
 static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data)
@@ -45,6 +51,13 @@ static void button1_clicked(GtkWidget *widget, gpointer data)
     // gtk_widget_hide(widget);
 }
 
+// // Structure that holds necessary pointers in order to relay user input and update state
+// typedef struct {
+//     GtkWidget *entry;
+//     gpointer other_data;
+// } CallbackData;
+// // CallbackData *callback_data = g_malloc(sizeof(CallbackData));
+
 int main (int argc, char *argv[])
 {
 	// GTK Variables
@@ -64,6 +77,7 @@ int main (int argc, char *argv[])
 	GdkPixbuf *pokerIcon = NULL;
 	int state = 0;
 	char seat[] = "Seat _";
+	// char username[MAX_STRING_BUFFER];
 	printf("state: %d\n",state);
 	
 	// Boolean used to determine if GTK has been initalized correctly
