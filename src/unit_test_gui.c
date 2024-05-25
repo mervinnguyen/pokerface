@@ -12,6 +12,8 @@ https://zetcode.com/gui/gtk2/
 https://docs.huihoo.com/gtk/tutorial/2.0/index.html
 https://www.manpagez.com/html/gtk2/gtk2-2.24.29/
 https://docs.gtk.org/gtk3/index.html
+https://developer.gnome.org/documentation/tools/valgrind.html
+valgrind --leak-check=full --suppressions=/usr/share/glib-2.0/valgrind/glib.supp ./GTK_ClockClient bondi 10000
 */
 /*
 TODO LIST: (player)
