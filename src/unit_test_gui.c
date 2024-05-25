@@ -71,8 +71,8 @@ static void button1_clicked(GtkWidget *widget, gpointer data)
 	printf("button 1 clicked\n");
 	// 
 
-	gtk_widget_destroy(widget);
-    // gtk_widget_hide(widget);
+	// gtk_widget_destroy(widget);
+    gtk_widget_hide(widget);
 }
 
 // // Structure that holds necessary pointers in order to relay user input and update state
@@ -200,7 +200,7 @@ int main (int argc, char *argv[])
 	
 	// When the x button is clicked closes the window
 	g_signal_connect (G_OBJECT(window), "delete_event", G_CALLBACK(delete_event), NULL);
-	// After the delete returns false a destory event occurs and pass control is then passed back to main
+	// After the delete returns false a destroy event occurs and pass control is then passed back to main
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(destroy), NULL); 
 	
 	// Update the seat number whenever the combo box has been changed
