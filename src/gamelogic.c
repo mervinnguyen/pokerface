@@ -143,9 +143,6 @@ void dealCards(Game *game)
     game->communityCards.top = 5;
 }
 
-int maxPriorityofPlayer(Game *game, int player){
-}
-
 int CheckPlayer(Game *game, int player){
     int priority;
     if(CheckRoyalFlush(game, player) == 1){
@@ -255,7 +252,7 @@ int CheckFullHouse(Game *game, int player){
 }
 
 int CheckFlush(Game *game, int player){
-    DECK *NewDeck;
+    Deck *NewDeck;
     int a, b, c, d, e, f, g, i;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
