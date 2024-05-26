@@ -94,6 +94,9 @@ typedef struct {
     Deck communityCards;
 }Game;
 
+const char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+const char *ranks[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+
 void makeDeck(Deck *deck){
     int count = 0;
     for (int suit = 0; suit < 4; suit++)
@@ -105,6 +108,34 @@ void makeDeck(Deck *deck){
             count++;
         }
     }
+}
+
+void shuffleDeck(Deck *deck)
+{
+    srand(time(NULL));
+    for (int i = NUM_CARDS - 1; i > 0; i--)
+    {
+        int j = rand() % (i + 1);
+        Card temp = deck->card[i];
+        deck->cards[i] = deck->cards[j];
+        deck->cards[j] = temp;
+    }
+}
+
+void dealCards(Game *game)
+{
+    int deckIndex = 0;
+    for (int i = 0; i < game->numPlayers; i++)
+    {
+        game->players[i].card1 = game->shuffleDeck.cards[deckIndex++];
+        game->players[i].card2 = game->shuffleDeck.cards[deckIndex++];
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        game->communityCards.cards[i] = game->shuffleDeck.cards[deckIndex++];
+    }
+    game->communityCards.top = 5;
 }
 
 int maxPriorityofPlayer(Game *game, int player){
@@ -473,6 +504,35 @@ Deck SortbySuit(Deck *D){
         }
     }
     return D;
+}
+
+void initGame(Game *game, int numPlayers)
+{
+    game->numPlayers = numPlayers;
+    game->round = PREFLOP;
+    game->pot = 0;
+    game->currentPlayer = 0;
+    game->dealer = 0;
+    game->smallBlind = 1;
+    game->bigBlind = 2;
+    game->numFolded = 0;
+    game->numCalled = 0;
+    game->numRaised = 0;
+    game->numAllIn = 0;
+
+    for (int i = 0; i < numPlayers; i++)
+    {
+        game->players[i].chips = 1000;
+        game->players[i].bet = 0;
+        game->players[i].raise = 0;
+        game->players[i].move = CHECK;
+
+    }
+
+    makeDeck(&game->shuffleDeck);
+    shuffleDeck(&game->shuffleDeck);
+    dealCards(game);
+
 }
 
 int main(){
