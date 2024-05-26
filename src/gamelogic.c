@@ -535,6 +535,21 @@ void initGame(Game *game, int numPlayers)
 
 }
 
+void displayPlayerCards(Player *player)
+{
+    printf("Player's cards are: %s of %s, %s of %s\n", ranks[player->card1.rank - 2], suits[player->card1.suit], ranks[player->card2.rank - 2], suits[player->card2.suit]);
+}
+
+void displayCommunityCards(Deck *communityCards) 
+{
+    printf("Community Cards: ");
+    for (int i = 0; i < communityCards->top; i++)
+    {
+        printf("%s of %s ", ranks[communityCards->cards[i].rank - 2], suits[communityCards->cards[i].suit]);   
+    }
+    printf("\n");
+}
+
 int main(){
     return 0;
 }	
