@@ -4,6 +4,7 @@
 
 #define NUM_CARDS 52
 #define CARDS_PER_PLAYER 2
+#define NUM_RANKS 13
 
 typedef enum{
     SPADES = 0,
@@ -46,6 +47,10 @@ typedef struct {
 	SUIT suit;
 	RANK rank;
 }Card;
+
+typedef struct {
+	struct Card cards[5];
+}Hand;
 
 typedef struct {
 	struct Card cards[NUM_CARDS];
