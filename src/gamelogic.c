@@ -668,8 +668,3 @@ void displayCommunityCards(Deck *communityCards)
     printf("\n");
 }
 
-
-
-int main(){
-    return 0;
-}	
