@@ -121,7 +121,7 @@ void shuffleDeck(Deck *deck)
     for (int i = NUM_CARDS - 1; i > 0; i--)
     {
         int j = rand() % (i + 1);
-        Card temp = deck->card[i];
+        Card temp = deck->cards[i];
         deck->cards[i] = deck->cards[j];
         deck->cards[j] = temp;
     }
@@ -181,6 +181,7 @@ int CheckPlayer(Game *game, int player){
 
 int CheckRoyalFlush(Game *game, int player){
     Deck *NewDeck;
+    int a, b, c, d, e, f, g, i;
     int i = 0;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -477,8 +478,8 @@ int CheckHighCard(Game *game, int player){
 
 
 //sort rank by rank
-Deck SortbyRank(Deck *D){
-    CARD A;
+Deck* SortbyRank(Deck *D){
+    Card A;
     int i, j;
     for (i=0; i<7; i++){
         for (j=0; j<7-i-1; j++){
@@ -493,8 +494,8 @@ Deck SortbyRank(Deck *D){
 }
 
 //Sort by suit
-Deck SortbySuit(Deck *D){
-    CARD A;
+Deck* SortbySuit(Deck *D){
+    Card A;
     int i, j;
     for (i=0; i<7; i++){
         for (j=0; j<7-i-1; j++){
@@ -641,7 +642,7 @@ void startGame(Game *game)
         }
         else if (game->round == TURN)
         {
-            game.communityCards.top = 4;
+            game->communityCards.top = 4;
         }
         else if (game->round == RIVER)
         {
