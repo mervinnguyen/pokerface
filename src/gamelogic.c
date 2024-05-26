@@ -5,13 +5,6 @@
 #define NUM_CARDS 52
 #define CARDS_PER_PLAYER 2
 
-typedef enum{
-    SPADES = 0,
-    CLUBS = 1,
-    DIAMONDS = 2,
-    HEARTS = 3
-}SUIT;
-
 //Assign values to face cards
 typedef enum{
     TWO = 2,
