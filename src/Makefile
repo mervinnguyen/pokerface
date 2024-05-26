@@ -25,9 +25,20 @@ all: unit_test_gui
 clean:
 	rm -rf *.o unit_test_gui
 
-# Make for the GUI Unit Test
-unit_test_gui: unit_test_gui.c
-	$(CC) $(LFLAGS) $(GTKINC) $(GTKLIBS) unit_test_gui.c -o unit_test_gui
+
+
+
+# Target for gui.o
+gui.o: gui.c gui.h
+	$(CC) $(CFLAGS) $(GTKINC) $(GTKLIBS) gui.c -o gui.o
+
+# Target for GUI Unit unit_test_gui
+unit_test_gui.o: unit_test_gui.c gui.h
+	$(CC) $(CFLAGS) $(GTKINC) $(GTKLIBS) unit_test_gui.c -o unit_test_gui.o
+
+# Target for GUI Unit unit_test_gui
+unit_test_gui: unit_test_gui.o gui.o
+	$(CC) $(LFLAGS) $(GTKINC) $(GTKLIBS) unit_test_gui.o gui.o -o unit_test_gui
 
 
 
