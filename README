@@ -25,6 +25,7 @@ Currently Working On:
 	- The GUI for the poker game on the client side as well as the server side GUI.
 	- More work on the poker game logic.
 	- Working to integrate the GUI with the client and server connection.
+	- Adding multiple client functionality for the server.
 	- Poker bot to fill in seats
 
 README For USERS:
