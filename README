@@ -25,6 +25,7 @@ Currently Working On:
 	- The GUI for the poker game on the client side as well as the server side GUI.
 	- More work on the poker game logic.
 	- Working to integrate the GUI with the client and server connection.
+	- Poker bot to fill in seats
 
 README For USERS:
 [For more details see Chess_UserManual.pdf located in the "doc/" directory]
