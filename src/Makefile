@@ -1,7 +1,8 @@
 # Makefile: Poker
 # Date Created: 5/21/2024
 # Modifications:
-# 	4/5/24 ~ Created Makefile and added make for unit_test_gui
+# 	5/21/24 ~ Created Makefile and added make for unit_test_gui
+#	5/26/24 ~ Updated Makefile for Poker v2024.05.27 (Alpha)
 
 # GTK 2.0 Makefile Variables
 GTKINC	= `PKG_CONFIG_PATH=/usr/share/pkgconfig pkg-config --cflags gtk+-2.0`
@@ -18,12 +19,21 @@ LFLAGS = -Wall -std=c11 -pedantic $(DEBUG) $(GTKLIBS) -lm
 
 # Default target
 all: pokerclient pokerserver
+	@echo ""
+	@echo "Main executables have been complied."
+	@echo "To start connect the server to a port and connect a client on a separate server."
+	@echo "Note: Current GUI opens on pokerclient after the client is shutdown"
+	@echo "Ex:"
+	@echo "	Step #1: Run \"./pokerserver 10080\" on the server crystalcove"
+	@echo "	Step #2: Run \"./pokerclient crystalcove 10080\" on a different server"
+	@echo ""
 
 # Generates all the Unit Tests
 test: unit_test_gui
 	@echo ""
 	@echo "All unit tests have been complied."
 	@echo "To start enter ./(Executabe Name) into the terminal."
+	@echo "Note: All unit test executables begin with \"unit_test_\""
 	@echo "	Ex: ./unit_test_gui"
 	@echo ""
 

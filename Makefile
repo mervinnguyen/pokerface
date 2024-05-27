@@ -1,15 +1,21 @@
-all: make
+# Top-Level Makefile: Poker
+# Date Created: 5/21/2024
+# Modifications:
+# 	5/21/24 ~ Created scaffold for Makefile
+#	5/26/24 ~ Updated Makefile for Poker v2024.05.27 (Alpha)
 
-# test >make clean all test
+# Default target
+all: make
 
 # Goes into src/ directory and calls the make there
 make:
 	(cd src/; make; cd ..)
-	cp src/unit_test_gui bin/
-	cp -r src/gui_images bin/
-
-# cp src/Client bin/
-# cp src/Server bin/
+	cp src/pokerserver bin/
+	cp src/pokerclient bin/
+	@echo ""
+	@echo "Note: Please the above instructions. Additonally the top level \"make all\""
+	@echo "      main executables are in the bin/ directory."
+	@echo ""
 
 # makes all the unit_tests and copys them to bin/
 test:
@@ -50,3 +56,4 @@ clean:
 	@echo ""
 	@echo "Excess files have been cleaned up."
 	@echo ""
+
