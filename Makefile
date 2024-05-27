@@ -2,24 +2,35 @@ all: make
 
 # test >make clean all test
 
-# Goes into src/ directory make 
+# Goes into src/ directory and calls the make there
 make:
 	(cd src/; make; cd ..)
-	cp src/Client bin/
-	cp src/Server bin/
+	cp src/unit_test_gui bin/
+	cp -r src/gui_images bin/
 
+# cp src/Client bin/
+# cp src/Server bin/
+
+# makes all the unit_tests and copys them to bin/
 test:
-	(cd src/; make unitTest1; cd ..)
-	(cd src/; make unitTest2; cd ..)
-	cp unitTest1 bin/
-	cp unitTest2 bin/
+	(cd src/; make unit_test_gui; cd ..)
+	cp src/unit_test_gui bin/
+	cp -r src/gui_images bin/
 
-# Fix tar (user) so that it's inside a poker folder
+# makes the gui unit_test and runs it
+test-gui:
+	(cd src/; make unit_test_gui; cd ..)
+	cp src/unit_test_gui bin/
+	cp -r src/gui_images bin/
+	(cd src/; ./unit_test_gui; cd ..)
+
+# --transform 's|^|poker/|' is used to place all the files into a folder called poker
 tar:
-# gtar cvzf Chess_V1.0_src.tar.gz README.txt LICENSE.txt INSTALL.txt Makefile bin/ doc/ src/
-# gtar cvzf Chess_V1.0.tar.gz README.txt LICENSE.txt INSTALL.txt bin/ doc/Chess_UserManual.pdf
-	
+	gtar cvzf Poker_Alpha.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL bin/ doc/Poker_UserManual.pdf
+	gtar cvzf Poker_Alpha_src.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL Makefile bin/ doc/ src/
+
+# Cleans unneeded files in the poker directory
 clean:
 	(cd src/; make clean; cd ..)
-	(cd bin/; rm *; cd ..)
-	rm *.tar.gz
+	(cd bin/; rm -rf *; cd ..)
+	rm -f *.tar.gz

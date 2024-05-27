@@ -33,6 +33,7 @@ Control Flow for Client Side GUI:
 
 int main (int argc, char *argv[])
 {
+	// Remindar - get the return and check if the window exists
 	CreateClientWindow(&argc, &argv);
 
 	// No Errors
