@@ -3,10 +3,10 @@
 /* unit_test_gui.c: Unit test for GUI	                             */
 /*********************************************************************/
 
-
 #include "gui.h"
 
 /*
+Links:
 https://zetcode.com/gui/gtk2/
 https://docs.huihoo.com/gtk/tutorial/2.0/index.html
 https://www.manpagez.com/html/gtk2/gtk2-2.24.29/

@@ -1,3 +1,8 @@
+/*********************************************************************/
+/* Poker Project, for EECS 22L, Spring 2024                   		 */
+/* pokerclient.c: Main file for the client			                 */
+/*********************************************************************/
+
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <netdb.h>

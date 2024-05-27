@@ -1,3 +1,8 @@
+/*********************************************************************/
+/* Poker Project, for EECS 22L, Spring 2024                   		 */
+/* gamelogic.c: source file for the poker game logic				 */
+/*********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
