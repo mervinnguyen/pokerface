@@ -17,9 +17,9 @@ General Instructions:
 	- After executing ./pokerclient use the ASCII interface to send messages to the server.
 
 Alpha Version Notes:
-	- In the latest version the client is able to send messages to the server.
-	- Once the client is shut down through 'bye' or 'shutdown' the lastest client side GUI will open.
+	- In the latest version of the client the GUI will open first for pokerclient.
 	- The client side GUI is able to take input from the user and save the username and password in memory.
+ 	- After the GUI has been closed with the 'X' the client is able to send messages to the server.
 
 Currently Working On:
 	- The GUI for the poker game on the client side as well as the server side GUI.
