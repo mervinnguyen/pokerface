@@ -51,9 +51,10 @@ tar:
 # Cleans unneeded files in the poker directory
 clean:
 	(cd src/; make clean; cd ..)
-	(cd bin/; rm -rf *; cd ..)
 	rm -rf *.tar.gz
 	@echo ""
 	@echo "Excess files have been cleaned up."
 	@echo ""
 
+# Currently don't need this
+# (cd bin/; rm -rf *; cd ..)
