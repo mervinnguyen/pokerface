@@ -11,10 +11,8 @@ GTKLIBS	= `PKG_CONFIG_PATH=/usr/share/pkgconfig pkg-config --libs gtk+-2.0`
 CC = gcc
 DEBUG = -g -DDEBUG
 # DEBUG = -O2
-CFLAGS = -Wall -std=c11 -pedantic $(DEBUG) -c
-LFLAGS = -Wall -std=c11 -pedantic $(DEBUG) -lm
-# MAIN = -DMAIN
-
+CFLAGS = -Wall -std=c11 -pedantic $(DEBUG) $(GTKINC) -c
+LFLAGS = -Wall -std=c11 -pedantic $(DEBUG) $(GTKLIBS) -lm
 
 # In progress
 
@@ -23,10 +21,18 @@ all:
 
 # Generates all the Unit Tests
 test: unit_test_gui
+	@echo ""
+	@echo "All unit tests have been complied."
+	@echo "To start enter ./(Executabe Name) into the terminal."
+	@echo "	Ex: ./unit_test_gui"
+	@echo ""
 
 # Target for clean-up
 clean:
 	rm -rf *.o unit_test_gui
+	@echo ""
+	@echo "Excess files have been cleaned up."
+	@echo ""
 
 
 
@@ -36,15 +42,15 @@ clean:
 
 # Target for gui.o
 gui.o: gui.c gui.h
-	$(CC) $(CFLAGS) $(GTKINC) $(GTKLIBS) gui.c -o gui.o
+	$(CC) $(CFLAGS) gui.c -o gui.o
 
 # Target for GUI Unit unit_test_gui
 unit_test_gui.o: unit_test_gui.c gui.h
-	$(CC) $(CFLAGS) $(GTKINC) $(GTKLIBS) unit_test_gui.c -o unit_test_gui.o
+	$(CC) $(CFLAGS) unit_test_gui.c -o unit_test_gui.o
 
 # Target for GUI Unit unit_test_gui
 unit_test_gui: unit_test_gui.o gui.o
-	$(CC) $(LFLAGS) $(GTKINC) $(GTKLIBS) unit_test_gui.o gui.o -o unit_test_gui
+	$(CC) $(LFLAGS) unit_test_gui.o gui.o -o unit_test_gui
 
 
 
