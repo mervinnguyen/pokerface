@@ -19,11 +19,17 @@ LFLAGS = -Wall -std=c11 -pedantic $(DEBUG) -lm
 # In progress
 
 # Default target
-all: unit_test_gui
+all:
+
+# Generates all the Unit Tests
+test: unit_test_gui
 
 # Target for clean-up
 clean:
 	rm -rf *.o unit_test_gui
+
+
+
 
 
 
