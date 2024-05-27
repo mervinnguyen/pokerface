@@ -33,8 +33,19 @@ Control Flow for Client Side GUI:
 
 int main (int argc, char *argv[])
 {
-	// Remindar - get the return and check if the window exists
-	CreateClientWindow(&argc, &argv);
+	// GTK Variables
+	GtkWidget *window = NULL;	// Main window
+	
+	// Creates a GUI for client
+	window = CreateClientWindow(&argc, &argv);
+	// Checks that a window pointer has been returned
+	if (!window)
+    {
+		// Prints error to standard error stream
+		fprintf(stderr, "GTKWidget ointer to window has not been returned.\n");
+        // Error Code #1
+		return 1;
+    }
 
 	// No Errors
 	return 0 ;

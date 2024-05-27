@@ -11,12 +11,14 @@
 #include <time.h>
 #include <string.h>
 
+#include "gui.h"
+
 #define MAX_MESSAGE_LEN 255
 #define PORT_NUMBER_LOWER_BOUND 1024
 
 void getPortNum(int argc, char *const *argv, int* portNum) {
     if (argc < 3) {
-        fprintf(stderr, "rong params. Usage: %s hostname port\n", argv[0]);
+        fprintf(stderr, "wrong params. Usage: %s hostname port\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     *portNum = atoi(argv[2]);
@@ -88,5 +90,20 @@ int main(int argc, char *argv[]) {
 
     printf("[%s] client is going to exit\n", argv[0]);
     close(socketFD);
+
+	// GTK Variables
+	GtkWidget *window = NULL;	// Main window
+	
+	// Creates a GUI for client
+	window = CreateClientWindow(&argc, &argv);
+	// Checks that a window pointer has been returned
+	if (!window)
+    {
+		// Prints error to standard error stream
+		fprintf(stderr, "GTKWidget ointer to window has not been returned.\n");
+        // Error Code #1
+		return 1;
+    }
+
     return 0;
 }

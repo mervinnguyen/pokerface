@@ -17,7 +17,7 @@ LFLAGS = -Wall -std=c11 -pedantic $(DEBUG) $(GTKLIBS) -lm
 # In progress
 
 # Default target
-all:
+all: pokerclient pokerserver
 
 # Generates all the Unit Tests
 test: unit_test_gui
@@ -29,25 +29,36 @@ test: unit_test_gui
 
 # Target for clean-up
 clean:
-	rm -rf *.o unit_test_gui
+	rm -rf *.o pokerclient pokerserver unit_test_gui
 	@echo ""
 	@echo "Excess files have been cleaned up."
 	@echo ""
 
+# Main Executables
+
+# Target for pokerclient.o
+pokerclient.o: pokerclient.c
+	$(CC) $(CFLAGS) pokerclient.c -o pokerclient.o
+# Target for pokerclient
+pokerclient: pokerclient.o gui.o
+	$(CC) $(LFLAGS) pokerclient.o gui.o -o pokerclient
+
+# Target for pokerserver.o
+pokerserver.o: pokerserver.c
+	$(CC) $(CFLAGS) pokerserver.c -o pokerserver.o
+# Target for pokerserver
+pokerserver: pokerserver.o
+	$(CC) $(LFLAGS) pokerserver.o -o pokerserver
 
 
-
-
-
+# GUI Unit Test
 
 # Target for gui.o
 gui.o: gui.c gui.h
 	$(CC) $(CFLAGS) gui.c -o gui.o
-
 # Target for GUI Unit unit_test_gui
 unit_test_gui.o: unit_test_gui.c gui.h
 	$(CC) $(CFLAGS) unit_test_gui.c -o unit_test_gui.o
-
 # Target for GUI Unit unit_test_gui
 unit_test_gui: unit_test_gui.o gui.o
 	$(CC) $(LFLAGS) unit_test_gui.o gui.o -o unit_test_gui
