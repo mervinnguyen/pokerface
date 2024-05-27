@@ -10,7 +10,7 @@ Last modified:
 General Instructions:
 	- Please follow the instructions stated in the INSTALL file for detailed instructions on how to install (downloading .tar files, unpack/extract using gtar) and run the program.
 	- To run the program navigate to the "bin/" directory and run the main executatables on different servers/accounts.
-	- In order to start the server to be connected to a port and the client connected to the server's port.
+	- In order to start the server connect it to a port and connect the client to the server's port.
 	Ex:
 		- Step #1: Run "./pokerserver 10080" on the server crystalcove
 		- Step #2: Run "./pokerclient crystalcove 10080" on a different server"
