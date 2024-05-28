@@ -29,7 +29,7 @@ all: pokerclient pokerserver
 	@echo ""
 
 # Generates all the Unit Tests
-test: unit_test_gui
+test: unit_test_gui unit_test_gamelogic
 	@echo ""
 	@echo "All unit tests have been complied."
 	@echo "To start enter ./(Executabe Name) into the terminal."
@@ -72,6 +72,18 @@ unit_test_gui.o: unit_test_gui.c gui.h
 # Target for GUI Unit unit_test_gui
 unit_test_gui: unit_test_gui.o gui.o
 	$(CC) $(LFLAGS) unit_test_gui.o gui.o -o unit_test_gui
+
+# Target for gamelogic.o
+gamelogic.o: gamelogic.c gamelogic.h
+	$(CC) $(CFLAGS) gamelogic.c -o gamelogic.o
+# Target for gamelogic unit_test_gamelogic
+unit_test_gamelogic.o: unit_test_gamelogic.c gamelogic.h
+	$(CC) $(CFLAGS) unit_test_gamelogic.c -o unit_test_gamelogic.o
+# Target for gamelogic unit_test_gamelogic
+unit_test_gui: unit_test_gamelogic.o gamelogic.o
+	$(CC) $(LFLAGS) unit_test_gamelogic.o gamelogic.o -o unit_test_gamelogic
+
+
 
 
 
