@@ -28,8 +28,24 @@ void getPortNum(int argc, char *const *argv, int* portNum) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    char *hostName = argv[1];
+int main(int argc, char *argv[])
+{
+    
+	// GTK Variables
+	GtkWidget *window = NULL;	// Main window
+	
+	// Creates a GUI for client
+	window = CreateClientWindow(&argc, &argv);
+	// Checks that a window pointer has been returned
+	if (!window)
+    {
+		// Prints error to standard error stream
+		fprintf(stderr, "GTKWidget ointer to window has not been returned.\n");
+        // Error Code #1
+		return 1;
+    }
+	
+	char *hostName = argv[1];
     int portNum = 0;
     getPortNum(argc, argv, &portNum);
 
@@ -90,20 +106,6 @@ int main(int argc, char *argv[]) {
 
     printf("[%s] client is going to exit\n", argv[0]);
     close(socketFD);
-
-	// GTK Variables
-	GtkWidget *window = NULL;	// Main window
-	
-	// Creates a GUI for client
-	window = CreateClientWindow(&argc, &argv);
-	// Checks that a window pointer has been returned
-	if (!window)
-    {
-		// Prints error to standard error stream
-		fprintf(stderr, "GTKWidget ointer to window has not been returned.\n");
-        // Error Code #1
-		return 1;
-    }
 
     return 0;
 }

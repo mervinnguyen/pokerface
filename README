@@ -10,21 +10,23 @@ Last modified:
 General Instructions:
 	- Please follow the instructions stated in the INSTALL file for detailed instructions on how to install (downloading .tar files, unpack/extract using gtar) and run the program.
 	- To run the program navigate to the "bin/" directory and run the main executatables on different servers/accounts.
-	- In order to start the server to be connected to a port and the client connected to the server's port.
+	- In order to start the server connect it to a port and connect the client to the server's port.
 	Ex:
 		- Step #1: Run "./pokerserver 10080" on the server crystalcove
 		- Step #2: Run "./pokerclient crystalcove 10080" on a different server"
 	- After executing ./pokerclient use the ASCII interface to send messages to the server.
 
 Alpha Version Notes:
-	- In the latest version the client is able to send messages to the server.
-	- Once the client is shut down through 'bye' or 'shutdown' the lastest client side GUI will open.
+	- In the latest version of the client the GUI will open first for pokerclient.
 	- The client side GUI is able to take input from the user and save the username and password in memory.
+ 	- After the GUI has been closed with the 'X' the client is able to send messages to the server.
 
 Currently Working On:
 	- The GUI for the poker game on the client side as well as the server side GUI.
 	- More work on the poker game logic.
 	- Working to integrate the GUI with the client and server connection.
+	- Adding multiple client functionality for the server.
+	- Poker bot to fill in seats
 
 README For USERS:
 [For more details see Chess_UserManual.pdf located in the "doc/" directory]
