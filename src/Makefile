@@ -73,6 +73,8 @@ unit_test_gui.o: unit_test_gui.c gui.h
 unit_test_gui: unit_test_gui.o gui.o
 	$(CC) $(LFLAGS) unit_test_gui.o gui.o -o unit_test_gui
 
+# gamelogic Unit Test
+
 # Target for gamelogic.o
 gamelogic.o: gamelogic.c gamelogic.h
 	$(CC) $(CFLAGS) gamelogic.c -o gamelogic.o
