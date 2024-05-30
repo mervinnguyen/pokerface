@@ -82,7 +82,7 @@ gamelogic.o: gamelogic.c gamelogic.h
 unit_test_gamelogic.o: unit_test_gamelogic.c gamelogic.h
 	$(CC) $(CFLAGS) unit_test_gamelogic.c -o unit_test_gamelogic.o
 # Target for gamelogic unit_test_gamelogic
-unit_test_gui: unit_test_gamelogic.o gamelogic.o
+unit_test_gamelogic: unit_test_gamelogic.o gamelogic.o
 	$(CC) $(LFLAGS) unit_test_gamelogic.o gamelogic.o -o unit_test_gamelogic
 
 
