@@ -132,6 +132,14 @@ void shuffleDeck(Deck *deck)
     }
 }
 
+void printDeck(Deck *deck)
+{
+    for (int i = 0; i < NUM_CARDS; i++)
+    {
+        printf("%s of %s\n", ranks[deck->cards[i].rank], suits[deck->cards[i].suit]);
+    }
+}
+
 void dealCards(Game *game)
 {
     int deckIndex = 0;
