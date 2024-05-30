@@ -8,10 +8,11 @@
 
 // Temporary Global Variables - To get entry box inputs from user and store them in a char array
 GtkWidget *CMM_ENTRY_username = NULL;			// Entry textbox for username
+GtkWidget *CMM_ENTRY_password = NULL;			// Entry textbox for password
 // Variables that will stor the User's inputs from the main menu
 char client_username[STRING_BUFFER] = "";
+char client_password[STRING_BUFFER] = "";
 // Testing Window Switching with a button click
-GtkWidget *Client_WINDOW = NULL;		// Main client window
 GtkWidget *Client_NOTEBOOK = NULL;		// Top level notebook to switch between the main menu and the game menu
 
 /* Static Function Declarations */
@@ -27,7 +28,10 @@ static void button1_clicked(GtkWidget *widget, gpointer data);
 GtkWidget *CreateClientWindow(int *argc, char **argv[])
 {
 	// GTK Variables
-	// GtkWidget *Client_WINDOW = NULL;				// Main window
+	GtkWidget *Client_WINDOW = NULL;		// Main client window
+	GtkWidget *Client_notebook_PAGE_1 = NULL;	// Notebook page #1
+	GtkWidget *Client_notebook_PAGE_2 = NULL;	// Notebook page #1
+
 	// GTK Variables for the Client Main Menu (CMM)
 	GtkWidget *CMM_vertical_ALIGNMENT = NULL;		// Allignment
 	GtkWidget *CMM_menu_LABEL = NULL;			// Main Menu Label
@@ -36,16 +40,19 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	GtkWidget *CMM_LABEL_username = NULL;			// Username Label
 	GtkWidget *CMM_LABEL_password = NULL;			// Password Label
 	// GtkWidget *CMM_ENTRY_username = NULL;			// Entry textbox for username
-	GtkWidget *CMM_ENTRY_password = NULL;			// Entry textbox for password
+	// GtkWidget *CMM_ENTRY_password = NULL;			// Entry textbox for password
 	GtkWidget *CMM_combo_ALIGNMENT = NULL;			// Alignment for dropdown selection
 	GtkWidget *CMM_COMBO_seat_dropdown = NULL;		// Dropdown text selection for seat number
 	GtkWidget *CMM_play_button_ALIGNMENT = NULL;	// Alignment for the play button
 	GtkWidget *CMM_BUTTON_play = NULL;				// Play button
 	// GTK Variables for the Client GAME Menu (CGM)
 	GtkWidget *CGM_vertical_ALIGNMENT = NULL;		// Allignment
-	GtkWidget *CGM_menu_LABEL = NULL;			// Main Menu Label
+	GtkWidget *CGM_menu_LABEL = NULL;				// Main Menu Label
 
-	GdkPixbuf *pokerIcon = NULL;
+	GdkPixbuf *pokerIcon = NULL;	// window icon
+	GdkColor CMM_background_COLOR;	// Background Color for CMM
+	GdkColor CGM_background_COLOR;	// Background Color for CGM
+
 	int state = 0;
 	char seat[] = "Seat _";
 	// Variables that will stor the User's inputs from the main menu
@@ -82,45 +89,30 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	pokerIcon = gdk_pixbuf_new_from_file("gui_images/PokerIcon.png", NULL); 
   	gtk_window_set_icon(GTK_WINDOW(Client_WINDOW), pokerIcon);
 
-
-	// // 2nd window test
-	// // Create a new window
-	// window_client_game = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	// // Update the settings for the window
-	// gtk_window_set_title(GTK_WINDOW(window_client_game), "Game");
-	// gtk_window_set_default_size(GTK_WINDOW(window_client_game), WINDOW_WIDTH, WINDOW_HEIGHT);
-	// // Center GTK window
-	// gtk_window_set_position(GTK_WINDOW(window_client_game), GTK_WIN_POS_CENTER);
-	// gtk_container_set_border_width(GTK_CONTAINER(window_client_game), 10);
-	// // Add poker icon to window
-	// pokerIcon = gdk_pixbuf_new_from_file("gui_images/PokerIcon.png", NULL); 
-  	// gtk_window_set_icon(GTK_WINDOW(window_client_game), pokerIcon);
-
 	// Create the client notebook to switch between the different windows
 	Client_NOTEBOOK = gtk_notebook_new();
+	// Turn off tabs
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(Client_NOTEBOOK), FALSE);
 	gtk_container_add(GTK_CONTAINER(Client_WINDOW), Client_NOTEBOOK);
-
-	// Move variable declaration to top later
-	// Create the first page
-	GtkWidget *client_page_1 = gtk_event_box_new();
-	gtk_notebook_append_page(GTK_NOTEBOOK(Client_NOTEBOOK), client_page_1, NULL);
-	// Change Notebook Color
-    GdkColor color_1;
-    gdk_color_parse("#f5f5f5", &color_1); // Parse color in hexadecimal format
-    gtk_widget_modify_bg(client_page_1, GTK_STATE_NORMAL, &color_1);
 	
 
+	/* Main Menu Creation */
+	// Create the first notebook page
+	Client_notebook_PAGE_1 = gtk_event_box_new();
+	gtk_notebook_append_page(GTK_NOTEBOOK(Client_NOTEBOOK), Client_notebook_PAGE_1, NULL);
+	// Change Notebook Color
+    gdk_color_parse("#f5f5f5", &CMM_background_COLOR); // Parse color in hexadecimal format
+    gtk_widget_modify_bg(Client_notebook_PAGE_1, GTK_STATE_NORMAL, &CMM_background_COLOR);
+	
 	// Create a vertical box for alignment
 	CMM_vertical_ALIGNMENT = gtk_vbox_new(FALSE, 10);
-	gtk_container_add(GTK_CONTAINER(client_page_1), CMM_vertical_ALIGNMENT);
+	gtk_container_add(GTK_CONTAINER(Client_notebook_PAGE_1), CMM_vertical_ALIGNMENT);
 
 	// Create a label that displays the ASCII main menu
 	CMM_menu_LABEL = gtk_label_new("Main Menu");
 	gtk_label_set_line_wrap(GTK_LABEL(CMM_menu_LABEL), TRUE);
 	gtk_label_set_justify(GTK_LABEL(CMM_menu_LABEL), GTK_JUSTIFY_CENTER);
 	gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), CMM_menu_LABEL, TRUE, TRUE, 0);
-
 
 	// Aligns the Username/Password table to the center
 	CMM_input_table_ALIGNMENT = gtk_alignment_new(0.455, 1, 0, 0);
@@ -170,20 +162,42 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), button, TRUE, TRUE, 0);
 	gtk_container_add(GTK_CONTAINER(CMM_play_button_ALIGNMENT), CMM_BUTTON_play);
 	
-	// Show widgets through Xming
-	gtk_widget_show_all(Client_WINDOW);
+
 	
 	// When the x button is clicked closes the window
 	g_signal_connect (G_OBJECT(Client_WINDOW), "delete_event", G_CALLBACK(delete_event), NULL);
 	// After the delete returns false a destroy event occurs and pass control is then passed back to main
 	g_signal_connect(G_OBJECT(Client_WINDOW), "destroy", G_CALLBACK(destroy), NULL); 
-	
 	// Update the seat number whenever the combo box has been changed
     g_signal_connect(CMM_COMBO_seat_dropdown, "changed", G_CALLBACK(update_seat), &client_seat);
-
 	// Do something after the button is clicked
 	// button1_clicked(button);
 	g_signal_connect(G_OBJECT(CMM_BUTTON_play), "clicked", G_CALLBACK(button1_clicked), &state); 
+
+
+	/* Game Menu Creation */
+	// Create the second notebook page
+	Client_notebook_PAGE_2 = gtk_event_box_new();
+	gtk_notebook_append_page(GTK_NOTEBOOK(Client_NOTEBOOK), Client_notebook_PAGE_2, NULL);
+	// Change Notebook Color
+    gdk_color_parse("#f5f5f5", &CGM_background_COLOR); // Parse color in hexadecimal format
+    gtk_widget_modify_bg(Client_notebook_PAGE_2, GTK_STATE_NORMAL, &CGM_background_COLOR);
+
+	// Create a vertical box for alignment
+	CGM_vertical_ALIGNMENT = gtk_vbox_new(FALSE, 10);
+	gtk_container_add(GTK_CONTAINER(Client_notebook_PAGE_2), CGM_vertical_ALIGNMENT);
+
+	// Create a label that displays the ASCII main menu
+	CGM_menu_LABEL = gtk_label_new("Game Menu");
+	gtk_label_set_line_wrap(GTK_LABEL(CGM_menu_LABEL), TRUE);
+	gtk_label_set_justify(GTK_LABEL(CGM_menu_LABEL), GTK_JUSTIFY_CENTER);
+	gtk_box_pack_start(GTK_BOX(CGM_vertical_ALIGNMENT), CGM_menu_LABEL, TRUE, TRUE, 0);
+
+
+
+	// Show widgets through Xming
+	gtk_widget_show_all(Client_WINDOW);
+
 
 	g_object_unref(pokerIcon);
 
@@ -193,6 +207,7 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	printf("test\n");
 	printf("state: %d\n",state);
 	printf("Client Username: %s\n", client_username);
+	printf("Client Password: %s\n", client_password);
 	printf("Client Seat: %d\n", client_seat);
 
 	return Client_WINDOW;
@@ -238,11 +253,15 @@ static void button1_clicked(GtkWidget *widget, gpointer data)
 
 	// Copy the username from the username entry box into a character array to be used later
 	snprintf(client_username, sizeof(client_username),"%s",gtk_entry_get_text((GtkEntry *)CMM_ENTRY_username));
+	// Copy the password from the password entry box into a character array to be used later
+	snprintf(client_password, sizeof(client_password),"%s",gtk_entry_get_text((GtkEntry *)CMM_ENTRY_password));
 	printf("button 1 clicked\n");
-	// 
+	
+	// Go to the game menu
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(Client_NOTEBOOK), 1);
 
 	// gtk_widget_destroy(widget);
-    gtk_widget_hide(widget);
+    // gtk_widget_hide(widget);
 
 	// Working switch between windows
 	// gtk_widget_show_all(window_client_game);
