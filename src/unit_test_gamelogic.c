@@ -7,8 +7,8 @@
 
 int main()
 {
-    struct Deck *deck;
-    struct Game *game;
+    Deck deck;
+    Game game;
 
     int numPlayers = 4;
     int smallBlind = 10;
