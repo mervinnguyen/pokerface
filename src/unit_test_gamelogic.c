@@ -13,8 +13,12 @@ int main(Game *game)
     int startingChips = 1000;
 
     makeDeck(&game);
+
+    printDeck(&game);
+
     shuffleDeck(&game);
 
+    printDeck(&game);
 }
 
 
