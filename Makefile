@@ -1,25 +1,60 @@
+# Top-Level Makefile: Poker
+# Date Created: 5/21/2024
+# Modifications:
+# 	5/21/24 ~ Created scaffold for Makefile
+#	5/26/24 ~ Updated Makefile for Poker v2024.05.27 (Alpha)
+
+# Default target
 all: make
 
-# test >make clean all test
-
-# Goes into src/ directory make 
+# Goes into src/ directory and calls the make there
 make:
 	(cd src/; make; cd ..)
-	cp src/Client bin/
-	cp src/Server bin/
+	cp src/pokerserver bin/
+	cp src/pokerclient bin/
+	@echo ""
+	@echo "Note: Please the above instructions. Additonally the top level \"make all\""
+	@echo "      main executables are in the bin/ directory."
+	@echo ""
 
+# makes all the unit_tests and copys them to bin/
 test:
-	(cd src/; make unitTest1; cd ..)
-	(cd src/; make unitTest2; cd ..)
-	cp unitTest1 bin/
-	cp unitTest2 bin/
+	(cd src/; make unit_test_gui; cd ..)
+	cp src/unit_test_gui bin/
+	cp -r src/gui_images bin/
+	@echo ""
+	@echo "All unit tests have been complied."
+	@echo "To start navigate the bin/ directory and enter./(Executabe Name) into the terminal."
+	@echo "Ex:"
+	@echo "	Step #1: cd bin/"
+	@echo "	Step #2: ./unit_test_gui"
+	@echo ""
 
-# Fix tar (user) so that it's inside a poker folder
+# makes the gui unit_test and runs it
+test-gui:
+	(cd src/; make unit_test_gui; cd ..)
+	cp src/unit_test_gui bin/
+	cp -r src/gui_images bin/
+	(cd src/; ./unit_test_gui; cd ..)
+	@echo ""
+	@echo "GUI has been tested."
+	@echo ""
+
+# --transform 's|^|poker/|' is used to place all the files into a folder called poker
 tar:
-# gtar cvzf Chess_V1.0_src.tar.gz README.txt LICENSE.txt INSTALL.txt Makefile bin/ doc/ src/
-# gtar cvzf Chess_V1.0.tar.gz README.txt LICENSE.txt INSTALL.txt bin/ doc/Chess_UserManual.pdf
-	
+	gtar cvzf Poker_Alpha.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL bin/ doc/Poker_UserManual.pdf
+	gtar cvzf Poker_Alpha_src.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL Makefile bin/ doc/ src/
+	@echo ""
+	@echo "Tar files have been successfully created."
+	@echo ""
+
+# Cleans unneeded files in the poker directory
 clean:
 	(cd src/; make clean; cd ..)
-	(cd bin/; rm *; cd ..)
-	rm *.tar.gz
+	rm -rf *.tar.gz
+	@echo ""
+	@echo "Excess files have been cleaned up."
+	@echo ""
+
+# Currently don't need this
+# (cd bin/; rm -rf *; cd ..)

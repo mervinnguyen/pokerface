@@ -1,9 +1,15 @@
+/*********************************************************************/
+/* Poker Project, for EECS 22L, Spring 2024                   		 */
+/* gamelogic.c: source file for the poker game logic				 */
+/*********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 #define NUM_CARDS 52
 #define CARDS_PER_PLAYER 2
+#define NUM_RANKS 13
 
 //Assign values to face cards
 typedef enum{
@@ -39,6 +45,10 @@ typedef struct {
 	SUIT suit;
 	RANK rank;
 }Card;
+
+typedef struct {
+	struct Card cards[5];
+}Hand;
 
 typedef struct {
 	struct Card cards[NUM_CARDS];
@@ -87,6 +97,9 @@ typedef struct {
     Deck communityCards;
 }Game;
 
+const char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+const char *ranks[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+
 void makeDeck(Deck *deck){
     int count = 0;
     for (int suit = 0; suit < 4; suit++)
@@ -100,7 +113,32 @@ void makeDeck(Deck *deck){
     }
 }
 
-int maxPriorityofPlayer(Game *game, int player){
+void shuffleDeck(Deck *deck)
+{
+    srand(time(NULL));
+    for (int i = NUM_CARDS - 1; i > 0; i--)
+    {
+        int j = rand() % (i + 1);
+        Card temp = deck->cards[i];
+        deck->cards[i] = deck->cards[j];
+        deck->cards[j] = temp;
+    }
+}
+
+void dealCards(Game *game)
+{
+    int deckIndex = 0;
+    for (int i = 0; i < game->numPlayers; i++)
+    {
+        game->players[i].card1 = game->shuffleDeck.cards[deckIndex++];
+        game->players[i].card2 = game->shuffleDeck.cards[deckIndex++];
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        game->communityCards.cards[i] = game->shuffleDeck.cards[deckIndex++];
+    }
+    game->communityCards.top = 5;
 }
 
 int CheckPlayer(Game *game, int player){
@@ -141,6 +179,7 @@ int CheckPlayer(Game *game, int player){
 
 int CheckRoyalFlush(Game *game, int player){
     Deck *NewDeck;
+    int a, b, c, d, e, f, g, i;
     int i = 0;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -212,7 +251,7 @@ int CheckFullHouse(Game *game, int player){
 }
 
 int CheckFlush(Game *game, int player){
-    DECK *NewDeck;
+    Deck *NewDeck;
     int a, b, c, d, e, f, g, i;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -437,8 +476,8 @@ int CheckHighCard(Game *game, int player){
 
 
 //sort rank by rank
-Deck SortbyRank(Deck *D){
-    CARD A;
+Deck* SortbyRank(Deck *D){
+    Card A;
     int i, j;
     for (i=0; i<7; i++){
         for (j=0; j<7-i-1; j++){
@@ -453,8 +492,8 @@ Deck SortbyRank(Deck *D){
 }
 
 //Sort by suit
-Deck SortbySuit(Deck *D){
-    CARD A;
+Deck* SortbySuit(Deck *D){
+    Card A;
     int i, j;
     for (i=0; i<7; i++){
         for (j=0; j<7-i-1; j++){
@@ -468,6 +507,160 @@ Deck SortbySuit(Deck *D){
     return D;
 }
 
-int main(){
-    return 0;
-}	
+void initGame(Game *game, int numPlayers)
+{
+    game->numPlayers = numPlayers;
+    game->round = PREFLOP;
+    game->pot = 0;
+    game->currentPlayer = 0;
+    game->dealer = 0;
+    game->smallBlind = 1;
+    game->bigBlind = 2;
+    game->numFolded = 0;
+    game->numCalled = 0;
+    game->numRaised = 0;
+    game->numAllIn = 0;
+
+    for (int i = 0; i < numPlayers; i++)
+    {
+        game->players[i].chips = 1000;
+        game->players[i].bet = 0;
+        game->players[i].raise = 0;
+        game->players[i].move = CHECK;
+
+    }
+
+    makeDeck(&game->shuffleDeck);
+    shuffleDeck(&game->shuffleDeck);
+    dealCards(game);
+
+}
+
+void playerAction(Game *game, int playerIndex) 
+{
+    Player *player = &game->players[playerIndex];
+    int action;
+
+    printf("Player %d's turn. Chips: %d\n", playerIndex, player->chips);
+    displayPlayerCards(player);
+    displayCommunityCards(&game->communityCards);
+
+    // Display current game state
+    printf("Current pot: %d\n", game->pot);
+    printf("Current call: %d\n", game->currentCall);
+    
+    // Check if the player can check
+    if (game->currentCall == 0) 
+    {
+        printf("Options: 1. Check  2. Bet  3. Fold\n");
+    } else 
+    {
+        printf("Options: 1. Call  2. Raise  3. Fold\n");
+    }
+    
+    // Get player action
+    scanf("%d", &action);
+
+    switch (action) 
+    {
+        case 1:
+            if (game->currentCall == 0) 
+            {
+                player->move = CHECK;
+                printf("Player %d checks.\n", playerIndex);
+            } 
+            else 
+            {
+                player->move = CALL;
+                player->chips -= game->currentCall;
+                player->bet += game->currentCall;
+                game->pot += game->currentCall;
+                printf("Player %d calls.\n", playerIndex);
+            }
+            break;
+
+        case 2:
+            if (game->currentCall == 0) 
+            {
+                // Place a bet
+                int bet;
+                printf("Enter bet amount: ");
+                scanf("%d", &bet);
+                player->chips -= bet;
+                player->bet += bet;
+                game->pot += bet;
+                game->currentCall = bet;
+                game->maxBet = bet;
+                player->move = RAISE;
+                printf("Player %d bets %d chips.\n", playerIndex, bet);
+            } 
+            else 
+            {
+                // Raise
+                int raise;
+                printf("Enter raise amount: ");
+                scanf("%d", &raise);
+                player->chips -= (game->currentCall + raise);
+                player->bet += (game->currentCall + raise);
+                game->pot += (game->currentCall + raise);
+                game->currentCall += raise;
+                game->maxBet += raise;
+                player->move = RAISE;
+                printf("Player %d raises by %d chips.\n", playerIndex, raise);
+            }
+            break;
+
+        case 3:
+            player->move = FOLD;
+            printf("Player %d folds.\n", playerIndex);
+            break;
+
+        default:
+            printf("Invalid action. Try again.\n");
+            playerAction(game, playerIndex); // Recursively ask for a valid action
+    }
+}
+
+void startGame(Game *game)
+{
+    while(game->round <= RIVER)
+    {
+        for (int i = 0; i < game->numPlayers; i++)
+        {
+            if (game->players[i].move != FOLD)
+            {
+                playerAction(game, i);
+            }
+        }
+        game->round++;
+
+        if (game->round == FLOP)
+        {
+            game->communityCards.top = 3;
+        }
+        else if (game->round == TURN)
+        {
+            game->communityCards.top = 4;
+        }
+        else if (game->round == RIVER)
+        {
+            game->communityCards.top = 5;
+        }
+    }
+}
+
+void displayPlayerCards(Player *player)
+{
+    printf("Player's cards are: %s of %s, %s of %s\n", ranks[player->card1.rank - 2], suits[player->card1.suit], ranks[player->card2.rank - 2], suits[player->card2.suit]);
+}
+
+void displayCommunityCards(Deck *communityCards) 
+{
+    printf("Community Cards: ");
+    for (int i = 0; i < communityCards->top; i++)
+    {
+        printf("%s of %s ", ranks[communityCards->cards[i].rank - 2], suits[communityCards->cards[i].suit]);   
+    }
+    printf("\n");
+}
+

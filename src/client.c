@@ -1,3 +1,8 @@
+/*********************************************************************/
+/* Poker Project, for EECS 22L, Spring 2024                   		 */
+/* client.c: source file for client creation	                     */
+/*********************************************************************/
+
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <netdb.h>

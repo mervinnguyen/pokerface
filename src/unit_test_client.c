@@ -1,7 +1,4 @@
 /*********************************************************************/
-/* Poker Project, for EECS 22L, Spring 2024                     	 */
-/* server.h: client header file										 */
+/* Poker Project, for EECS 22L, Spring 2024                   		 */
+/* unit_test_client.c: Unit test for client			                 */
 /*********************************************************************/
-
-
-

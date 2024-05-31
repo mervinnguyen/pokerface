@@ -1,6 +1,6 @@
 /*********************************************************************/
 /* Poker Project, for EECS 22L, Spring 2024                     	 */
-/* server.h: client header file										 */
+/* constants.h: contstants/macros header file						 */
 /*********************************************************************/
 
 

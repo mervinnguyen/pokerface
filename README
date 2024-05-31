@@ -1,13 +1,82 @@
-# GIT HAS BEEN SET UP
-# Pokerface v2024.05.27
-# **Authors**: Mharlo Borromeo, Jack Lu, Calvin Nguyen, Mervin Nguyen, Peter Nguyen, Derek Tang
-#
-# **Last modified**: 27 May 2024
-#
-# **How to install**: Please look at INSTALL file for detailed instructions on how to install and run the program. 
-# Download .tar, unpack/extract using gtar, navigate to 'bin' directory within Linux, run executable by using './pokerface' command. 
-#
-# ### Developer's notes: How to Tar
-# tar -zcvf Poker_Alpha.tar.gz ./doc/README ./doc/COPYRIGHT ./bin/Chess ./doc/Chess_UserManual.pdf ./doc/INSTALL ./Makefile 
-# tar -zcvf Poker_Alpha_src.tar.gz ./doc ./bin ./src ./Makefile
-#
+README
+Version:
+	-Pokerface v2024.05.27
+	© 2004 - 2024 PretendGINEERS. All Rights Reserved.
+Authors:
+	-Mharlo Borromeo, Jack Lu, Calvin Nguyen, Mervin Nguyen, Peter Nguyen, Derek Tang
+Last modified:
+	-27 May 2024
+
+General Instructions:
+	- Please follow the instructions stated in the INSTALL file for detailed instructions on how to install (downloading .tar files, unpack/extract using gtar) and run the program.
+	- To run the program navigate to the "bin/" directory and run the main executatables on different servers/accounts.
+	- In order to start the server connect it to a port and connect the client to the server's port.
+	Ex:
+		- Step #1: Run "./pokerserver 10080" on the server crystalcove
+		- Step #2: Run "./pokerclient crystalcove 10080" on a different server"
+	- After executing ./pokerclient use the ASCII interface to send messages to the server.
+
+Alpha Version Notes:
+	- In the latest version of the client the GUI will open first for pokerclient.
+	- The client side GUI is able to take input from the user and save the username and password in memory.
+ 	- After the GUI has been closed with the 'X' the client is able to send messages to the server.
+
+Currently Working On:
+	- The GUI for the poker game on the client side as well as the server side GUI.
+	- More work on the poker game logic.
+	- Working to integrate the GUI with the client and server connection.
+	- Adding multiple client functionality for the server.
+	- Poker bot to fill in seats
+
+README For USERS:
+[For more details see Chess_UserManual.pdf located in the "doc/" directory]
+Poker_Alpha.tar.gz Contents:
+bin/						- Directory which stores copies of all the executables
+	pokerserver				- Main poker executable for the server
+	pokerclient				- Main poker executable for the client
+doc/						- Directory with the user documentation
+	Poker_UserManual.pdf	- Detailed user manual for the user
+INSTALL						- Installation directions
+COPYRIGHT					- Licensing by PretendGINEERS Studios & PretendGINEERS Software Inc.
+README						- README for Pokerface
+
+README FOR PROGRAMERS:
+[For more details see Chess_SoftwareSpec.pdf located in the "doc/" directory]
+Top-Level Make Commands:
+	- make all - create the main executables and places them in the bin/ directory
+	- make test - create the test executables and places them in the bin/ directory
+	- make test-gui - creates the unit test for the GUI and runs it (Requires XMing)
+	- make clean - Cleans up excess files
+	- make tar - generates the .tar.gz files for the user/programer 
+
+Poker_Alpha_src.tar.gz Contents:
+bin/							- Directory which stores copies of all the executables
+	pokerserver					- Main poker executable for the server
+	pokerclient					- Main poker executable for the client
+doc/							- Directory with the user and software documentation
+	Poker_SoftwareSpec.pdf		- Detailed software specifications for the programmer
+	Poker_UserManual.pdf		- Detailed user manual for the user
+scr/							- Directory which contains all the c files along with a Makefile
+	gui_images/					- Directory which contains images needed by the GUI
+	client.c					- Functions for the client
+	client.h					- client.c header file
+	constants.h					- File with all the macros
+	gamelogic.c					- Functions for the gamelogic
+	gamelogic.h					- gamelogic.c header file
+	gui.c						- Functions for the gui
+	gui.h						- gui.c header file
+	Makefile					- Makefile to create the executables
+	pokerclient.c				- Main executable for the client
+	pokerserver.c				- Main executable for the server
+	server.c					- Functions for the server
+	server.h					- server.c header file
+	structures.h				- File which contains structure definitions
+	unit_test_client.c			- Unit test for the client
+	unit_test_gamelogic.c		- Unit test for the gamelogic
+	unit_test_gui.c				- Unit test for the gui
+	unit_test_server.c			- Unit test for the server
+INSTALL.TXT						- Installation directions
+LICENSE.TXT						- Licensing by PretendGINEERS Studios & PretendGINEERS Software Inc.
+Makefile						- Top level Makefile
+README							- README for Pokerface
+

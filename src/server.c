@@ -1,3 +1,8 @@
+/*********************************************************************/
+/* Poker Project, for EECS 22L, Spring 2024                   		 */
+/* server.c: Main file for the server creation			             */
+/*********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
