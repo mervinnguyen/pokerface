@@ -200,27 +200,34 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	gtk_label_set_justify(GTK_LABEL(CGM_menu_LABEL), GTK_JUSTIFY_CENTER);
 	gtk_box_pack_start(GTK_BOX(CGM_vertical_ALIGNMENT), CGM_menu_LABEL, TRUE, TRUE, 0);
 
+	// testing
+	// Create a card shadow
+	// function : create card shadows
+    GtkWidget *FRAME_card_test = gtk_frame_new(NULL);
+    gtk_frame_set_shadow_type(GTK_FRAME(FRAME_card_test), GTK_SHADOW_IN);
+	gtk_box_pack_start(GTK_BOX(CGM_vertical_ALIGNMENT), FRAME_card_test, TRUE, TRUE, 0);
+
 	// Create a horizontal button box for alignment
 	CGM_BUTTON_BOX = gtk_hbutton_box_new();
 	// Set the layout style to center
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(CGM_BUTTON_BOX), GTK_BUTTONBOX_CENTER);
 	gtk_container_add(GTK_CONTAINER(CGM_vertical_ALIGNMENT), CGM_BUTTON_BOX);
-
 	// Creates a button to FOLD in the game
 	CGM_BUTTON_fold = gtk_button_new_with_label("Fold");
 	gtk_widget_set_tooltip_text(CGM_BUTTON_fold, "Click to fold");
-	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_fold, FALSE, FALSE, 0);
 	// Creates a button to CALL in the game
 	CGM_BUTTON_call = gtk_button_new_with_label("Call");
 	gtk_widget_set_tooltip_text(CGM_BUTTON_call, "Click to call");
-	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_call, FALSE, FALSE, 0);
 	// Creates a button to RAISE in the game
 	CGM_BUTTON_raise = gtk_button_new_with_label("Raise");
 	gtk_widget_set_tooltip_text(CGM_BUTTON_raise, "Click to raise");
-	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_raise, FALSE, FALSE, 0);
 	// Creates a button to go ALL IN in the game
 	CGM_BUTTON_all_in = gtk_button_new_with_label("All in");
 	gtk_widget_set_tooltip_text(CGM_BUTTON_all_in, "Click to go all in");
+	// Packs all the buttons into the button box
+	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_fold, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_call, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_raise, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_all_in, FALSE, FALSE, 0);
 
 	gtk_widget_set_sensitive(CGM_BUTTON_raise, FALSE);
