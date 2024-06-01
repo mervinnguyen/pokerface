@@ -11,7 +11,7 @@ GtkWidget *CMM_ENTRY_password = NULL;			// Entry textbox for password
 // Variables that will stor the User's inputs from the main menu
 char client_username[STRING_BUFFER] = "";
 char client_password[STRING_BUFFER] = "";
-// Testing Window Switching with a button click
+// Testings Window Switching with a button click
 GtkWidget *Client_NOTEBOOK = NULL;		// Top level notebook to switch between the main menu and the game menu
 
 /* Static Function Declarations */
