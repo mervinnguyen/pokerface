@@ -205,6 +205,11 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	gtk_box_pack_start(GTK_BOX(CGM_vertical_ALIGNMENT), FRAME_card_test, TRUE, TRUE, 0);
 	gtk_container_remove(GTK_CONTAINER(CGM_vertical_ALIGNMENT), FRAME_card_test);
 
+	// Testing add 5 cards to the poker table (then try updating the cards using an array)
+	GtkWidget *table_card_1 = gtk_image_new_from_file("gui_images/playing_cards/2_of_clubs.png");
+	gtk_box_pack_start(GTK_BOX(CGM_vertical_ALIGNMENT), table_card_1, TRUE, TRUE, 0);
+	gtk_container_remove(GTK_CONTAINER(CGM_vertical_ALIGNMENT), table_card_1);
+
 	// Create a horizontal button box for alignment
 	CGM_BUTTON_BOX = gtk_hbutton_box_new();
 	// Set the layout style to center
