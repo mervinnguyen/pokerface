@@ -27,13 +27,13 @@ static void button1_clicked(GtkWidget *widget, gpointer data);
 GtkWidget *CreateClientWindow(int *argc, char **argv[])
 {
 	// GTK Variables
-	GtkWidget *Client_WINDOW = NULL;		// Main client window
+	GtkWidget *Client_WINDOW = NULL;			// Main client window
 	GtkWidget *Client_notebook_PAGE_1 = NULL;	// Notebook page #1
 	GtkWidget *Client_notebook_PAGE_2 = NULL;	// Notebook page #1
 
 	// GTK Variables for the Client Main Menu (CMM)
 	GtkWidget *CMM_vertical_ALIGNMENT = NULL;		// Allignment
-	GtkWidget *CMM_menu_LABEL = NULL;			// Main Menu Label
+	GtkWidget *CMM_menu_LABEL = NULL;				// Main Menu Label
 	GtkWidget *CMM_input_table_ALIGNMENT = NULL;	// Alignment for Username/Password table
 	GtkWidget *CMM_input_TABLE_menu = NULL;			// Table widget for Username/Password
 	GtkWidget *CMM_LABEL_username = NULL;			// Username Label
