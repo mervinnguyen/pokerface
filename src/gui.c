@@ -24,13 +24,6 @@ static void update_seat(GtkComboBox *CMM_COMBO_seat_dropdown, int *client_seat);
 static void CMM_BUTTON_play_clicked(GtkWidget *widget, gpointer data);
 // set_event_box_background_image sets the background for an event box (for each page in the Notebook)
 static void set_event_box_background_image(GtkWidget* event_box, char *image_file_path);
-// update_background_image is connected whenever the window is resized remaking the background effectively making the background resize as well
-static void update_background_image(GtkWidget *widget, gpointer data)
-{
-	// NOT WORKING
-	GtkWidget *event_box = (GtkWidget *)(data);
-	set_event_box_background_image(event_box, "gui_images/CMM_BG_2.jpeg");
-}
 
 
 GtkWidget *CreateClientWindow(int *argc, char **argv[])
@@ -42,13 +35,13 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	GtkWidget *Client_notebook_PAGE_2 = NULL;		// Notebook page #2
 
 	// GTK Variables for the Client Main Menu (CMM)
-	GtkWidget *CMM_vertical_box_ALIGNMENT = NULL;				// Alignment for the user input and play button
+	GtkWidget *CMM_vertical_box_ALIGNMENT = NULL;	// Alignment for the user input and play button
 	GtkWidget *CMM_VERTICAL_BOX = NULL;				// Top level VBox Widget
 	// GtkWidget *CMM_menu_LABEL = NULL;				// Main Menu Label
 	GtkWidget *CMM_input_table_ALIGNMENT = NULL;	// Alignment for Username/Password table
 	GtkWidget *CMM_input_TABLE_menu = NULL;			// Table widget for Username/Password
 	GtkWidget *CMM_LABEL_username = NULL;			// Username Label
-	GdkColor CMM_table_label_COLOR;	// Background Color for username and password labels
+	GdkColor CMM_table_label_COLOR;					// Background Color for username and password labels
 	GtkWidget *CMM_LABEL_password = NULL;			// Password Label
 	// GtkWidget *CMM_ENTRY_username = NULL;			// Entry textbox for username
 	// GtkWidget *CMM_ENTRY_password = NULL;			// Entry textbox for password
@@ -69,20 +62,14 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	GtkWidget *CGM_BUTTON_raise = NULL;				// Raise button
 	GtkWidget *CGM_BUTTON_all_in = NULL;			// All in button
 
-	// Miscellaneous GTK variables
-	
-	// GdkColor CMM_background_COLOR;	// Background Color for CMM
-	GdkColor CGM_background_COLOR;	// Background Color for CGM
-
 	// Non-GTK variables
-	int state = 0;
+	int menu_state = 0;
 	char seat[] = "Seat _";
-	// Variables that will stor the User's inputs from the main menu
-	// The default seat number is 1.
-	int client_seat = 1;
+	// Variables that will store the User's inputs from the main menu
+	int client_seat = 1;				// The default seat number is 1.
 
 	// char username[MAX_STRING_BUFFER];
-	printf("state: %d\n",state);
+	printf("menu_state: %d\n",menu_state);
 	
 	// Boolean used to determine if GTK has been initalized correctly
 	bool initGTK = 0;
@@ -123,11 +110,8 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// Create the first notebook page
 	Client_notebook_PAGE_1 = gtk_event_box_new();
 	gtk_notebook_append_page(GTK_NOTEBOOK(Client_NOTEBOOK), Client_notebook_PAGE_1, NULL);
-	// Change Notebook Color
-    // gdk_color_parse("#f5f5f5", &CMM_background_COLOR); // Parse color in hexadecimal format
-    // gtk_widget_modify_bg(Client_notebook_PAGE_1, GTK_STATE_NORMAL, &CMM_background_COLOR);
-	// Set the background image of the Notebook
-	set_event_box_background_image(Client_notebook_PAGE_1, "gui_images/CMM_BG_2.jpeg");
+	// Set the background image of the first notebook page
+	set_event_box_background_image(Client_notebook_PAGE_1, "gui_images/CMM_BG.jpeg");
 
 	// Aligns the vertical box 
 	CMM_vertical_box_ALIGNMENT = gtk_alignment_new(0.5, 0.6, 1, 0.65);
@@ -145,11 +129,8 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// Aligns the Username/Password table to the center
 	CMM_input_table_ALIGNMENT = gtk_alignment_new(0.475, 1, 0, 0);
 	gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_input_table_ALIGNMENT, TRUE, TRUE, 0);
-
 	// Create a table for aligning the Username/Password section
 	CMM_input_TABLE_menu = gtk_table_new(2, 2, TRUE);
-		// gtk_table_set_row_spacings(GTK_TABLE(CMM_input_TABLE_menu), 2);
-  		// gtk_table_set_col_spacings(GTK_TABLE(CMM_input_TABLE_menu), 2);
 	// Create labels for username and password input
 	CMM_LABEL_username = gtk_label_new(NULL);
 	gtk_label_set_markup(GTK_LABEL(CMM_LABEL_username), "<span size='xx-large'>Username:</span>");
@@ -162,7 +143,9 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// Create entries for user to input a username and password
 	CMM_ENTRY_username = gtk_entry_new();
 	CMM_ENTRY_password = gtk_entry_new();
+	// Hide password input
 	gtk_entry_set_visibility(GTK_ENTRY(CMM_ENTRY_password), FALSE);
+	// Attach labels and entries to the table
 	gtk_table_attach(GTK_TABLE(CMM_input_TABLE_menu), CMM_LABEL_username, 0, 1, 0, 1, GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK, 0, 5);
 	gtk_table_attach(GTK_TABLE(CMM_input_TABLE_menu), CMM_LABEL_password, 0, 1, 1, 2, GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK, 0, 5);
 	gtk_table_attach(GTK_TABLE(CMM_input_TABLE_menu), CMM_ENTRY_username, 1, 2, 0, 1, GTK_FILL | GTK_SHRINK, GTK_FILL | GTK_SHRINK, 5, 0);
@@ -173,10 +156,10 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// Aligns the dropdown menu to the center
 	CMM_combo_ALIGNMENT = gtk_alignment_new(0.5, 0.1, 0.246, 0.3);
 	gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_combo_ALIGNMENT, TRUE, TRUE, 0);
-
 	// Create a combo box text so that users can select a seat
 	CMM_COMBO_seat_dropdown = gtk_combo_box_new_text();
-	for (int i; i<NUMBER_OF_SEATS; i++)
+	// Populate options for the seat dropdown selection 
+	for (int i; i < NUMBER_OF_SEATS; i++)
 	{
 		seat[5] = '1' + i; 
 		// printf("%s\n", seat);
@@ -190,30 +173,19 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// Aligns the button to the center
 	CMM_play_button_ALIGNMENT = gtk_alignment_new(0.5, 0.5, 0.2, 0.1);
 	gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_play_button_ALIGNMENT, TRUE, TRUE, 0);
-	
 	// Creates a button to play the game
 	CMM_BUTTON_play = gtk_button_new_with_label("Play");
 	gtk_widget_set_tooltip_text(CMM_BUTTON_play, "Click to start game");
 	// gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), button, TRUE, TRUE, 0);
 	gtk_container_add(GTK_CONTAINER(CMM_play_button_ALIGNMENT), CMM_BUTTON_play);
-	
-	// When the x button is clicked closes the window
-	g_signal_connect(G_OBJECT(Client_WINDOW), "delete_event", G_CALLBACK(delete_event), NULL);
-	// After the delete returns false a destroy event occurs and pass control is then passed back to main
-	g_signal_connect(G_OBJECT(Client_WINDOW), "destroy", G_CALLBACK(destroy), NULL);
-	// Update the seat number whenever the combo box has been changed
-    g_signal_connect(CMM_COMBO_seat_dropdown, "changed", G_CALLBACK(update_seat), &client_seat);
-	// Save user inputs and start the game once the button is clicked
-	g_signal_connect(G_OBJECT(CMM_BUTTON_play), "clicked", G_CALLBACK(CMM_BUTTON_play_clicked), &state);
 
 
 	/* Game Menu Creation */
 	// Create the second notebook page
 	Client_notebook_PAGE_2 = gtk_event_box_new();
 	gtk_notebook_append_page(GTK_NOTEBOOK(Client_NOTEBOOK), Client_notebook_PAGE_2, NULL);
-	// Change Notebook Color
-    gdk_color_parse("#f5f5f5", &CGM_background_COLOR); // Parse color in hexadecimal format
-    gtk_widget_modify_bg(Client_notebook_PAGE_2, GTK_STATE_NORMAL, &CGM_background_COLOR);
+	// Set the background image of the second notebook page
+	set_event_box_background_image(Client_notebook_PAGE_2, "gui_images/CGM_BG.jpeg");
 
 	// Create a vertical box for alignment
 	CGM_vertical_ALIGNMENT = gtk_vbox_new(FALSE, 10);
@@ -258,6 +230,19 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 
 	gtk_widget_set_sensitive(CGM_BUTTON_raise, FALSE);
 
+
+	/* Signal Connections */
+	// Window
+	// When the x button is clicked closes the window
+	g_signal_connect(G_OBJECT(Client_WINDOW), "delete_event", G_CALLBACK(delete_event), NULL);
+	// After the delete returns false a destroy event occurs and pass control is then passed back to main
+	g_signal_connect(G_OBJECT(Client_WINDOW), "destroy", G_CALLBACK(destroy), NULL);
+	// Main Menu
+	// Update the seat number whenever the combo box has been changed
+    g_signal_connect(CMM_COMBO_seat_dropdown, "changed", G_CALLBACK(update_seat), &client_seat);
+	// Save user inputs and start the game once the button is clicked
+	g_signal_connect(G_OBJECT(CMM_BUTTON_play), "clicked", G_CALLBACK(CMM_BUTTON_play_clicked), &menu_state);
+	// Game Menu
 	// Disable the Fold button after it is clicked
 	g_signal_connect(G_OBJECT(CGM_BUTTON_fold), "clicked", G_CALLBACK(gtk_widget_set_sensitive), NULL); 
 
@@ -276,7 +261,7 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// GTK set to sleep (GTK now waits until an event occurs)
     gtk_main();
 
-	printf("state: %d\n",state);
+	printf("menu_state: %d\n",menu_state);
 	printf("Client Username: %s\n", client_username);
 	printf("Client Password: %s\n", client_password);
 	printf("Client Seat: %d\n", client_seat);
@@ -353,7 +338,8 @@ static void set_event_box_background_image(GtkWidget* event_box, char *image_fil
 	// Traverse upwards to find the top-level window
     GtkWidget *top_level = gtk_widget_get_toplevel(event_box);
     // Check if the top-level widget is a window
-	if (GTK_IS_WINDOW(top_level)) {
+	if (GTK_IS_WINDOW(top_level))
+	{
         // Get the size of the window
         gtk_window_get_size(GTK_WINDOW(top_level), &window_width, &window_height);
     }
@@ -380,6 +366,10 @@ static void set_event_box_background_image(GtkWidget* event_box, char *image_fil
 	g_object_unref(style_copy);
 }
 
+
+
+/* NOT WORKING */
+/*
 // GdkPixbuf *create_pixbuf(const gchar * filename) {
     
 //    GdkPixbuf *pixbuf;
@@ -394,3 +384,22 @@ static void set_event_box_background_image(GtkWidget* event_box, char *image_fil
 
 //    return pixbuf;
 // }
+
+
+// update_background_image is connected whenever the window is resized remaking the background effectively making the background resize as well
+g_signal_connect(G_OBJECT(Client_WINDOW), "size-request", G_CALLBACK(update_background_image), Client_notebook_PAGE_1);
+static void update_background_image(GtkWidget *widget, gpointer data)
+{
+	// NOT WORKING
+	int window_width = WINDOW_WIDTH;
+	int window_height = WINDOW_HEIGHT;
+	// Get the size of the window
+    gtk_window_get_size(GTK_WINDOW(widget), &window_width, &window_height);
+
+	
+	// set_event_box_background_image(event_box, "gui_images/CMM_BG_2.jpeg");
+	printf("Window resized: Width=%d, Height=%d\n", window_width, window_height);
+	GtkWidget *event_box = (GtkWidget *)(data);
+	set_event_box_background_image(event_box, "gui_images/CMM_BG.jpeg");
+}
+*/
