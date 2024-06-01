@@ -20,8 +20,8 @@ static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 static void destroy(GtkWidget *widget, gpointer data);
 // update_seat is connected whenever the user selects a new seat from the drop down menu and it saves the seat for the current user into an integer
 static void update_seat(GtkComboBox *CMM_COMBO_seat_dropdown, int *client_seat);
-// button1_clicked us connected whenever the play button on the main menu is clicked. It saves the username and password the user has entered and switches to the game window
-static void button1_clicked(GtkWidget *widget, gpointer data);
+// CMM_BUTTON_play_clicked us connected whenever the play button on the main menu is clicked. It saves the username and password the user has entered and switches to the game window
+static void CMM_BUTTON_play_clicked(GtkWidget *widget, gpointer data);
 
 
 GtkWidget *CreateClientWindow(int *argc, char **argv[])
@@ -48,6 +48,12 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// GTK Variables for the Client GAME Menu (CGM)
 	GtkWidget *CGM_vertical_ALIGNMENT = NULL;		// Allignment
 	GtkWidget *CGM_menu_LABEL = NULL;				// Main Menu Label
+
+	GtkWidget *CGM_BUTTON_BOX = NULL;			// Button box to hold all the buttons on the bottom
+	GtkWidget *CGM_BUTTON_fold = NULL;				// Fold button
+	GtkWidget *CGM_BUTTON_call = NULL;				// Call button
+	GtkWidget *CGM_BUTTON_raise = NULL;				// Raise button
+	GtkWidget *CGM_BUTTON_all_in = NULL;			// All in button
 
 	// Miscellaneous GTK variables
 	GdkPixbuf *pokerIcon = NULL;	// window icon
@@ -172,9 +178,8 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	g_signal_connect(G_OBJECT(Client_WINDOW), "destroy", G_CALLBACK(destroy), NULL); 
 	// Update the seat number whenever the combo box has been changed
     g_signal_connect(CMM_COMBO_seat_dropdown, "changed", G_CALLBACK(update_seat), &client_seat);
-	// Do something after the button is clicked
-	// button1_clicked(button);
-	g_signal_connect(G_OBJECT(CMM_BUTTON_play), "clicked", G_CALLBACK(button1_clicked), &state); 
+	// Save user inputs and start the game once the button is clicked
+	g_signal_connect(G_OBJECT(CMM_BUTTON_play), "clicked", G_CALLBACK(CMM_BUTTON_play_clicked), &state); 
 
 
 	/* Game Menu Creation */
@@ -195,6 +200,33 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	gtk_label_set_justify(GTK_LABEL(CGM_menu_LABEL), GTK_JUSTIFY_CENTER);
 	gtk_box_pack_start(GTK_BOX(CGM_vertical_ALIGNMENT), CGM_menu_LABEL, TRUE, TRUE, 0);
 
+	// Create a horizontal button box for alignment
+	CGM_BUTTON_BOX = gtk_hbutton_box_new();
+	// Set the layout style to center
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(CGM_BUTTON_BOX), GTK_BUTTONBOX_CENTER);
+	gtk_container_add(GTK_CONTAINER(CGM_vertical_ALIGNMENT), CGM_BUTTON_BOX);
+
+	// Creates a button to FOLD in the game
+	CGM_BUTTON_fold = gtk_button_new_with_label("Fold");
+	gtk_widget_set_tooltip_text(CGM_BUTTON_fold, "Click to fold");
+	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_fold, FALSE, FALSE, 0);
+	// Creates a button to CALL in the game
+	CGM_BUTTON_call = gtk_button_new_with_label("Call");
+	gtk_widget_set_tooltip_text(CGM_BUTTON_call, "Click to call");
+	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_call, FALSE, FALSE, 0);
+	// Creates a button to RAISE in the game
+	CGM_BUTTON_raise = gtk_button_new_with_label("Raise");
+	gtk_widget_set_tooltip_text(CGM_BUTTON_raise, "Click to raise");
+	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_raise, FALSE, FALSE, 0);
+	// Creates a button to go ALL IN in the game
+	CGM_BUTTON_all_in = gtk_button_new_with_label("All in");
+	gtk_widget_set_tooltip_text(CGM_BUTTON_all_in, "Click to go all in");
+	gtk_box_pack_start(GTK_BOX(CGM_BUTTON_BOX), CGM_BUTTON_all_in, FALSE, FALSE, 0);
+
+	gtk_widget_set_sensitive(CGM_BUTTON_raise, FALSE);
+
+	// Disable the Fold button after it is clicked
+	g_signal_connect(G_OBJECT(CGM_BUTTON_fold), "clicked", G_CALLBACK(gtk_widget_set_sensitive), NULL); 
 
 
 	// Show widgets through Xming
@@ -248,7 +280,7 @@ static void update_seat(GtkComboBox *CMM_COMBO_seat_dropdown, int *client_seat)
 	// if(number_assigned != 1)
 }
 
-static void button1_clicked(GtkWidget *widget, gpointer data)
+static void CMM_BUTTON_play_clicked(GtkWidget *widget, gpointer data)
 {
 	int *value_ptr = (int *)data;
 	*(value_ptr) = 1;
