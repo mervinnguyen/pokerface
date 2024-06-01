@@ -20,46 +20,18 @@ static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data);
 static void destroy(GtkWidget *widget, gpointer data);
 // update_seat is connected whenever the user selects a new seat from the drop down menu and it saves the seat for the current user into an integer
 static void update_seat(GtkComboBox *CMM_COMBO_seat_dropdown, int *client_seat);
-// CMM_BUTTON_play_clicked us connected whenever the play button on the main menu is clicked. It saves the username and password the user has entered and switches to the game window
+// CMM_BUTTON_play_clicked is connected whenever the play button on the main menu is clicked. It saves the username and password the user has entered and switches to the game window
 static void CMM_BUTTON_play_clicked(GtkWidget *widget, gpointer data);
-
-void set_event_box_background_image(GtkWidget* event_box, char *image_file_path)
+// set_event_box_background_image sets the background for an event box (for each page in the Notebook)
+static void set_event_box_background_image(GtkWidget* event_box, char *image_file_path);
+// update_background_image is connected whenever the window is resized remaking the background effectively making the background resize as well
+static void update_background_image(GtkWidget *widget, gpointer data)
 {
-    GdkPixbuf* pixbuf = NULL;
-	GdkPixmap *pixmap = NULL;
-	GtkStyle* original_style = NULL;
-	GtkStyle* style = NULL;
-
-	// Load the pixbuff
-	pixbuf = gdk_pixbuf_new_from_file(image_file_path, NULL);
-	// Error if the image can't be loaded
-	if (!pixbuf)
-	{
-        fprintf(stderr, "Error: Unable to load image!\n\tFile Path: %s\n", image_file_path);
-        return;
-    }
-
-	pixbuf = gdk_pixbuf_scale_simple(pixbuf, WINDOW_WIDTH, WINDOW_HEIGHT, GDK_INTERP_BILINEAR);
-
-    // Creates a GdkPixmap
-	gdk_pixbuf_render_pixmap_and_mask(pixbuf, &pixmap, NULL, 255);
-	if (!pixmap)
-	{
-		fprintf(stderr, "Error: Unable to create pixmap!\n");
-        g_object_unref(pixbuf);
-        return;
-    }
-
-    original_style = gtk_widget_get_style(event_box);
-    style = gtk_style_copy(original_style);
-    style->bg_pixmap[GTK_STATE_NORMAL] = pixmap;
-	
-    gtk_widget_set_style(event_box, style);
-	
-	// Unreference GTK widgets
-	g_object_unref(pixbuf);
-	g_object_unref(style);
+	// NOT WORKING
+	GtkWidget *event_box = (GtkWidget *)(data);
+	set_event_box_background_image(event_box, "gui_images/CMM_BG_2.jpeg");
 }
+
 
 GtkWidget *CreateClientWindow(int *argc, char **argv[])
 {
@@ -70,11 +42,13 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	GtkWidget *Client_notebook_PAGE_2 = NULL;		// Notebook page #2
 
 	// GTK Variables for the Client Main Menu (CMM)
-	GtkWidget *CMM_vertical_ALIGNMENT = NULL;		// Allignment
-	GtkWidget *CMM_menu_LABEL = NULL;				// Main Menu Label
+	GtkWidget *CMM_vertical_box_ALIGNMENT = NULL;				// Alignment for the user input and play button
+	GtkWidget *CMM_VERTICAL_BOX = NULL;				// Top level VBox Widget
+	// GtkWidget *CMM_menu_LABEL = NULL;				// Main Menu Label
 	GtkWidget *CMM_input_table_ALIGNMENT = NULL;	// Alignment for Username/Password table
 	GtkWidget *CMM_input_TABLE_menu = NULL;			// Table widget for Username/Password
 	GtkWidget *CMM_LABEL_username = NULL;			// Username Label
+	GdkColor CMM_table_label_COLOR;	// Background Color for username and password labels
 	GtkWidget *CMM_LABEL_password = NULL;			// Password Label
 	// GtkWidget *CMM_ENTRY_username = NULL;			// Entry textbox for username
 	// GtkWidget *CMM_ENTRY_password = NULL;			// Entry textbox for password
@@ -155,28 +129,37 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// Set the background image of the Notebook
 	set_event_box_background_image(Client_notebook_PAGE_1, "gui_images/CMM_BG_2.jpeg");
 
-	
+	// Aligns the vertical box 
+	CMM_vertical_box_ALIGNMENT = gtk_alignment_new(0.5, 0.6, 1, 0.65);
+	gtk_container_add(GTK_CONTAINER(Client_notebook_PAGE_1), CMM_vertical_box_ALIGNMENT);
 	// Create a vertical box for alignment
-	CMM_vertical_ALIGNMENT = gtk_vbox_new(FALSE, 10);
-	gtk_container_add(GTK_CONTAINER(Client_notebook_PAGE_1), CMM_vertical_ALIGNMENT);
+	CMM_VERTICAL_BOX = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(CMM_vertical_box_ALIGNMENT), CMM_VERTICAL_BOX);
 
-	// Create a label that displays the ASCII main menu
-	CMM_menu_LABEL = gtk_label_new("Main Menu");
-	gtk_label_set_line_wrap(GTK_LABEL(CMM_menu_LABEL), TRUE);
-	gtk_label_set_justify(GTK_LABEL(CMM_menu_LABEL), GTK_JUSTIFY_CENTER);
-	gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), CMM_menu_LABEL, TRUE, TRUE, 0);
+	// // Create a label that displays the ASCII main menu
+	// CMM_menu_LABEL = gtk_label_new("Main Menu");
+	// gtk_label_set_line_wrap(GTK_LABEL(CMM_menu_LABEL), TRUE);
+	// gtk_label_set_justify(GTK_LABEL(CMM_menu_LABEL), GTK_JUSTIFY_CENTER);
+	// gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_menu_LABEL, TRUE, TRUE, 0);
 
 	// Aligns the Username/Password table to the center
-	CMM_input_table_ALIGNMENT = gtk_alignment_new(0.455, 1, 0, 0);
-	gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), CMM_input_table_ALIGNMENT, TRUE, TRUE, 0);
+	CMM_input_table_ALIGNMENT = gtk_alignment_new(0.475, 1, 0, 0);
+	gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_input_table_ALIGNMENT, TRUE, TRUE, 0);
 
 	// Create a table for aligning the Username/Password section
 	CMM_input_TABLE_menu = gtk_table_new(2, 2, TRUE);
 		// gtk_table_set_row_spacings(GTK_TABLE(CMM_input_TABLE_menu), 2);
   		// gtk_table_set_col_spacings(GTK_TABLE(CMM_input_TABLE_menu), 2);
+	// Create labels for username and password input
+	CMM_LABEL_username = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(CMM_LABEL_username), "<span size='xx-large'>Username:</span>");
+	CMM_LABEL_password = gtk_label_new(NULL);
+	gtk_label_set_markup(GTK_LABEL(CMM_LABEL_password), "<span size='xx-large'>Password:</span>");
+	// Change Label Color
+    gdk_color_parse("#ffffff", &CMM_table_label_COLOR);
+    gtk_widget_modify_fg(CMM_LABEL_username, GTK_STATE_NORMAL, &CMM_table_label_COLOR);
+	gtk_widget_modify_fg(CMM_LABEL_password, GTK_STATE_NORMAL, &CMM_table_label_COLOR);
 	// Create entries for user to input a username and password
-	CMM_LABEL_username = gtk_label_new("Username:");
-	CMM_LABEL_password = gtk_label_new("Password:");
 	CMM_ENTRY_username = gtk_entry_new();
 	CMM_ENTRY_password = gtk_entry_new();
 	gtk_entry_set_visibility(GTK_ENTRY(CMM_ENTRY_password), FALSE);
@@ -188,8 +171,8 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	gtk_container_add(GTK_CONTAINER(CMM_input_table_ALIGNMENT), CMM_input_TABLE_menu);
 
 	// Aligns the dropdown menu to the center
-	CMM_combo_ALIGNMENT = gtk_alignment_new(0.5, 0, 0.246, 0.3);
-	gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), CMM_combo_ALIGNMENT, TRUE, TRUE, 0);
+	CMM_combo_ALIGNMENT = gtk_alignment_new(0.5, 0.1, 0.246, 0.3);
+	gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_combo_ALIGNMENT, TRUE, TRUE, 0);
 
 	// Create a combo box text so that users can select a seat
 	CMM_COMBO_seat_dropdown = gtk_combo_box_new_text();
@@ -202,28 +185,26 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	gtk_combo_box_set_active(GTK_COMBO_BOX(CMM_COMBO_seat_dropdown), 0);
 	// Adds the dropdown menu to the combo alignment
 	gtk_container_add(GTK_CONTAINER(CMM_combo_ALIGNMENT), CMM_COMBO_seat_dropdown);
-	// gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), CMM_COMBO_seat_dropdown, TRUE, TRUE, 0);
+	// gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_COMBO_seat_dropdown, TRUE, TRUE, 0);
 
 	// Aligns the button to the center
 	CMM_play_button_ALIGNMENT = gtk_alignment_new(0.5, 0.5, 0.2, 0.1);
-	gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), CMM_play_button_ALIGNMENT, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), CMM_play_button_ALIGNMENT, TRUE, TRUE, 0);
 	
 	// Creates a button to play the game
 	CMM_BUTTON_play = gtk_button_new_with_label("Play");
 	gtk_widget_set_tooltip_text(CMM_BUTTON_play, "Click to start game");
-	// gtk_box_pack_start(GTK_BOX(CMM_vertical_ALIGNMENT), button, TRUE, TRUE, 0);
+	// gtk_box_pack_start(GTK_BOX(CMM_VERTICAL_BOX), button, TRUE, TRUE, 0);
 	gtk_container_add(GTK_CONTAINER(CMM_play_button_ALIGNMENT), CMM_BUTTON_play);
 	
-
-	
 	// When the x button is clicked closes the window
-	g_signal_connect (G_OBJECT(Client_WINDOW), "delete_event", G_CALLBACK(delete_event), NULL);
+	g_signal_connect(G_OBJECT(Client_WINDOW), "delete_event", G_CALLBACK(delete_event), NULL);
 	// After the delete returns false a destroy event occurs and pass control is then passed back to main
-	g_signal_connect(G_OBJECT(Client_WINDOW), "destroy", G_CALLBACK(destroy), NULL); 
+	g_signal_connect(G_OBJECT(Client_WINDOW), "destroy", G_CALLBACK(destroy), NULL);
 	// Update the seat number whenever the combo box has been changed
     g_signal_connect(CMM_COMBO_seat_dropdown, "changed", G_CALLBACK(update_seat), &client_seat);
 	// Save user inputs and start the game once the button is clicked
-	g_signal_connect(G_OBJECT(CMM_BUTTON_play), "clicked", G_CALLBACK(CMM_BUTTON_play_clicked), &state); 
+	g_signal_connect(G_OBJECT(CMM_BUTTON_play), "clicked", G_CALLBACK(CMM_BUTTON_play_clicked), &state);
 
 
 	/* Game Menu Creation */
@@ -280,6 +261,11 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	// Disable the Fold button after it is clicked
 	g_signal_connect(G_OBJECT(CGM_BUTTON_fold), "clicked", G_CALLBACK(gtk_widget_set_sensitive), NULL); 
 
+
+
+	// Update the background image whenever the window is resized
+	// NOT WORKING
+	// g_signal_connect(G_OBJECT(Client_WINDOW), "configure-event", G_CALLBACK(update_background_image), Client_notebook_PAGE_1);
 
 	// Show widgets through Xming
 	gtk_widget_show_all(Client_WINDOW);
@@ -346,6 +332,53 @@ static void CMM_BUTTON_play_clicked(GtkWidget *widget, gpointer data)
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(Client_NOTEBOOK), 1);
 }
 
+static void set_event_box_background_image(GtkWidget* event_box, char *image_file_path)
+{
+	// Variables
+    GdkPixbuf* pixbuf = NULL;
+	GdkPixmap *pixmap = NULL;
+	GtkStyle* style_original = NULL;
+	GtkStyle* style_copy = NULL;
+	int window_width = WINDOW_WIDTH;
+	int window_height = WINDOW_HEIGHT;
+
+	// Load the pixbuff
+	pixbuf = gdk_pixbuf_new_from_file(image_file_path, NULL);
+	// Error if the image can't be loaded
+	if (!pixbuf)
+	{
+        fprintf(stderr, "Error: Unable to load image!\n\tFile Path: %s\n", image_file_path);
+        return;
+    }
+	// Traverse upwards to find the top-level window
+    GtkWidget *top_level = gtk_widget_get_toplevel(event_box);
+    // Check if the top-level widget is a window
+	if (GTK_IS_WINDOW(top_level)) {
+        // Get the size of the window
+        gtk_window_get_size(GTK_WINDOW(top_level), &window_width, &window_height);
+    }
+	// Set the scale of the image to the window's width/height
+	pixbuf = gdk_pixbuf_scale_simple(pixbuf, window_width, window_height, GDK_INTERP_BILINEAR);
+    // Creates a GdkPixmap
+	gdk_pixbuf_render_pixmap_and_mask(pixbuf, &pixmap, NULL, 255);
+	if (!pixmap)
+	{
+		fprintf(stderr, "Error: Unable to create pixmap from pixbuff!\n");
+        g_object_unref(pixbuf);
+        return;
+    }
+	// Copies the style of the event box
+    style_original = gtk_widget_get_style(event_box);
+    style_copy = gtk_style_copy(style_original);
+	// Sets the background of the copied style to the generated pixmap 
+    style_copy->bg_pixmap[GTK_STATE_NORMAL] = pixmap;
+	// Sets the event_box style to the style with the new background
+    gtk_widget_set_style(event_box, style_copy);
+	
+	// Unreference GTK widgets
+	g_object_unref(pixbuf);
+	g_object_unref(style_copy);
+}
 
 // GdkPixbuf *create_pixbuf(const gchar * filename) {
     
