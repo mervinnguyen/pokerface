@@ -2,7 +2,6 @@
 /* Poker Project, for EECS 22L, Spring 2024                   		 */
 /* GUI.c: source file for GUI creation	                             */
 /*********************************************************************/
-// Note CMM in variable names stands for Client Main Menu
 
 #include "gui.h"
 
