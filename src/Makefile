@@ -21,8 +21,8 @@ LFLAGS = -Wall -std=c11 -pedantic $(DEBUG) $(GTKLIBS) -lm
 all: pokerclient pokerserver
 	@echo ""
 	@echo "Main executables have been complied."
-	@echo "To start connect the server to a port and connect a client on a separate server."
-	@echo "Note: Current GUI opens on pokerclient befpre the client connects to the server."
+	@echo "To start connect the pokerserver to a port and connect a pokerclient on a separate server."
+	@echo "Note: Current GUI opens on pokerclient before the client connects to the server."
 	@echo "Ex:"
 	@echo "	Step #1: Run \"./pokerserver 10080\" on the server crystalcove"
 	@echo "	Step #2: Run \"./pokerclient crystalcove 10080\" on a different server"
