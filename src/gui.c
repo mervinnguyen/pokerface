@@ -5,7 +5,7 @@
 
 #include "gui.h"
 
-// Temporary Global Variables - To get entry box inputs from user and store them in a char array
+// Temporary Global Variable - To get entry box inputs from user and store them in a char array
 GtkWidget *CMM_ENTRY_username = NULL;			// Entry textbox for username
 GtkWidget *CMM_ENTRY_password = NULL;			// Entry textbox for password
 // Variables that will stor the User's inputs from the main menu
