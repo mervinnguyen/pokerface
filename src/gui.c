@@ -45,10 +45,12 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	GtkWidget *CMM_COMBO_seat_dropdown = NULL;		// Dropdown text selection for seat number
 	GtkWidget *CMM_play_button_ALIGNMENT = NULL;	// Alignment for the play button
 	GtkWidget *CMM_BUTTON_play = NULL;				// Play button
+
 	// GTK Variables for the Client GAME Menu (CGM)
 	GtkWidget *CGM_vertical_ALIGNMENT = NULL;		// Allignment
 	GtkWidget *CGM_menu_LABEL = NULL;				// Main Menu Label
 
+	// Miscellaneous GTK variables
 	GdkPixbuf *pokerIcon = NULL;	// window icon
 	GdkColor CMM_background_COLOR;	// Background Color for CMM
 	GdkColor CGM_background_COLOR;	// Background Color for CGM
