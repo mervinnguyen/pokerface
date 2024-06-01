@@ -55,6 +55,7 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[])
 	GdkColor CMM_background_COLOR;	// Background Color for CMM
 	GdkColor CGM_background_COLOR;	// Background Color for CGM
 
+	// Non-GTK variables
 	int state = 0;
 	char seat[] = "Seat _";
 	// Variables that will stor the User's inputs from the main menu
