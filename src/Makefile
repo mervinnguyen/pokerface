@@ -21,15 +21,15 @@ LFLAGS = -Wall -std=c11 -pedantic $(DEBUG) $(GTKLIBS) -lm
 all: pokerclient pokerserver
 	@echo ""
 	@echo "Main executables have been complied."
-	@echo "To start connect the server to a port and connect a client on a separate server."
-	@echo "Note: Current GUI opens on pokerclient after the client is shutdown"
+	@echo "To start connect the pokerserver to a port and connect a pokerclient on a separate server."
+	@echo "Note: Current GUI opens on pokerclient before the client connects to the server."
 	@echo "Ex:"
 	@echo "	Step #1: Run \"./pokerserver 10080\" on the server crystalcove"
 	@echo "	Step #2: Run \"./pokerclient crystalcove 10080\" on a different server"
 	@echo ""
 
 # Generates all the Unit Tests
-test: unit_test_gui
+test: unit_test_gui unit_test_gamelogic
 	@echo ""
 	@echo "All unit tests have been complied."
 	@echo "To start enter ./(Executabe Name) into the terminal."
@@ -72,6 +72,20 @@ unit_test_gui.o: unit_test_gui.c gui.h
 # Target for GUI Unit unit_test_gui
 unit_test_gui: unit_test_gui.o gui.o
 	$(CC) $(LFLAGS) unit_test_gui.o gui.o -o unit_test_gui
+
+# gamelogic Unit Test
+
+# Target for gamelogic.o
+gamelogic.o: gamelogic.c gamelogic.h
+	$(CC) $(CFLAGS) gamelogic.c -o gamelogic.o
+# Target for gamelogic unit_test_gamelogic
+unit_test_gamelogic.o: unit_test_gamelogic.c gamelogic.h
+	$(CC) $(CFLAGS) unit_test_gamelogic.c -o unit_test_gamelogic.o
+# Target for gamelogic unit_test_gamelogic
+unit_test_gamelogic: unit_test_gamelogic.o gamelogic.o
+	$(CC) $(LFLAGS) unit_test_gamelogic.o gamelogic.o -o unit_test_gamelogic
+
+
 
 
 
