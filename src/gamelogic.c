@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "gamelogic.h"
 
 #define NUM_CARDS 52
 #define CARDS_PER_PLAYER 2
@@ -147,6 +148,21 @@ void dealCards(Game *game)
         game->communityCards.cards[i] = game->shuffleDeck.cards[deckIndex++];
     }
     game->communityCards.top = 5;
+}
+
+int getMaxPriorityOfThePlayer(Game *game, int person){
+    int max = INT_MIN;
+    max = (max > CheckRoyalFlush(game, person)) ? max : CheckRoyalFlush(game, person);
+    max = (max > CheckStraightFlush(game, person)) ? max : CheckStraightFlush(game, person);
+    max = (max > CheckFourOfAKind(game, person)) ? max : CheckFourOfAKind(game, person);
+    max = (max > CheckFullHouse(game, person)) ? max : CheckFullHouse(game, person);
+    max = (max > CheckFlush(game, person)) ? max : CheckFlush(game, person);
+    max = (max > CheckStraight(game, person)) ? max : CheckStraight(game, person);
+    max = (max > CheckThreeOfAKind(game, person)) ? max : CheckThreeOfAKind(game, person);
+    max = (max > CheckTwoPair(game, person)) ? max : CheckTwoPair(game, person);
+    max = (max > CheckPair(game, person)) ? max : CheckPair(game, person);
+    max = (max > CheckHighCard(game, person)) ? max : CheckHighCard(game, person);
+    return max;
 }
 
 int CheckPlayer(Game *game, int player){
