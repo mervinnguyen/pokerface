@@ -150,6 +150,47 @@ void dealCards(Game *game)
     game->communityCards.top = 5;
 }
 
+Game *Tie (Game *game){
+    //find the priorities of each of the player
+    int priorities[7];
+    for (int i = 0; i < game->numPlayers; i++){
+        priorities[i] = CheckPlayer(game, i);
+    }
+
+    //pick the player with the highest priority
+    int maxPriorityValue;
+    int PlayersWhoTie = 0;
+    for (int i = 0; i < game->numPlayers; i++){
+        if (priorities[i] > maxPriorityValue){
+            maxPriorityValue = priorities[i];
+        }
+    }
+
+    //find number of players who tied
+    for (int i = 0; i < game->numPlayers; i++){
+        if (priorities[i] == maxPriorityValue){
+            PlayersWhoTie++;
+        }
+
+    //index for tied players
+    int tiedPlayers[7];
+    int j = 0;
+    for (int i = 0; i < game->numPlayers; i++){
+        if (priorities[i] == maxPriorityValue){
+            tiedPlayers[j] = i;
+            j++;
+        }
+    }
+
+    //distribute the pot among these players
+    int potToDistribute = game->pot / PlayersWhoTie;
+    for (int i = 0; i < PlayersWhoTie; i++){
+        game->players[tiedPlayers[i]].chips += potToDistribute;
+    }
+
+    return game;
+}
+
 int getMaxPriorityOfThePlayer(Game *game, int person){
     int max = INT_MIN;
     max = (max > CheckRoyalFlush(game, person)) ? max : CheckRoyalFlush(game, person);
