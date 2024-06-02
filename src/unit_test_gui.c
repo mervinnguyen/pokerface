@@ -16,13 +16,15 @@ valgrind --leak-check=full --suppressions=/usr/share/glib-2.0/valgrind/glib.supp
 */
 /*
 TODO LIST: (player)
-Create a structure to store the state, vbox containing the entry boxes, char arrays to store the username and password.
+import a poker table for the background
+add player names, points, and action 
+
+
+Create a structure to remove the use of gobal variables
 Next expand the structure to accept the combo box, int to store the combo box.
 Expand it so that I'm able to switch between two windows at the click of the button.
 
 Set the title to the title of the program by passing the user input which would be argv[0]
-
-In order to switch windows try using the state to determine when to switch as well as which window is displayed at the end
 
 Control Flow for Client Side GUI:
 	Start with the creation of the main menu it will return the pointer to the created window.

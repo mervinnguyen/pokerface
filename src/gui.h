@@ -11,8 +11,8 @@
 #include <stdbool.h>
 
 // Contstants will be moved to constants.h later
-#define WINDOW_WIDTH 1000
-#define WINDOW_HEIGHT 500
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 600
 #define NUMBER_OF_SEATS 4
 #define STRING_BUFFER 100
 

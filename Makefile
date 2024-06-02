@@ -42,8 +42,8 @@ test-gui:
 
 # --transform 's|^|poker/|' is used to place all the files into a folder called poker
 tar:
-	gtar cvzf Poker_Alpha.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL bin/ doc/Poker_UserManual.pdf
-	gtar cvzf Poker_Alpha_src.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL Makefile bin/ doc/ src/
+	gtar cvzf Poker_Beta.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL bin/ doc/Poker_UserManual.pdf
+	gtar cvzf Poker_Beta_src.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL Makefile bin/ doc/ src/
 	@echo ""
 	@echo "Tar files have been successfully created."
 	@echo ""
