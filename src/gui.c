@@ -64,7 +64,7 @@ void get_card_file_path(char *card_in_string_format)
 {
 	// Variables
 	char file_path[STRING_BUFFER] = "gui_images/playing_cards/";
-	char png[] = ".png";
+	char png[STRING_BUFFER] = ".png";
 	// Create the file path for the type of playing card
 	strcat(file_path, card_in_string_format);
 	strcat(file_path, png);

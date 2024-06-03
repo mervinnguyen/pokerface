@@ -61,7 +61,7 @@ char** initializeCards() {
                 exit(EXIT_FAILURE);
             }
             strcpy(card, marks[j]);
-            strcat(card, "_");
+            strcat(card, "_of_");
             strcat(card, shapes[i]);
             cards[index++] = card;
         }
