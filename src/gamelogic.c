@@ -149,6 +149,22 @@ void dealCards(Game *game)
     }
     game->communityCards.top = 5;
 }
+int Winner (Game *game){
+    int winner = 0;
+    int highestPriority = 0;
+    for (int i = 0; i < game->numPlayers; ++i){
+        int priority = CheckPlayer(game, i);
+        if (priority > highestPriority){
+            highestPriority = priority;
+            winner = i;
+        }
+        else if (priority == highestPriority){
+                winner = -1;
+            
+        }
+    }
+    return winner;
+}
 
 Game *Tie (Game *game){
     //find the priorities of each of the player
