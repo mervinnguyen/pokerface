@@ -17,6 +17,7 @@ General Instructions:
 	- After executing ./pokerclient use the ASCII interface to send messages to the server.
 
 Beta Version Notes:
+	- There is a known error regarding Pango-WARNING (Invalid UTF-8 string) if this does happen please "make clean" and try again as it seems to occur sometime on executables which have run fine earlier. 
 	- In the latest version of the client the GUI will open after cards are requested from server for pokerclient.
 	- The client side GUI is able to take input from the user and save the username and password in memory. It is also able to display dealer card inputs from the server.
  	- After the GUI has been closed with the 'X' the client is able to send messages to the server.

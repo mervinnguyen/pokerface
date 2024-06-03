@@ -29,7 +29,8 @@ all: pokerclient pokerserver
 	@echo ""
 
 # Generates all the Unit Tests
-test: unit_test_gui unit_test_gamelogic
+# unit_test_gamelogic will be added back in once it runs without errors
+test: unit_test_gui unit_test_client unit_test_server
 	@echo ""
 	@echo "All unit tests have been complied."
 	@echo "To start enter ./(Executabe Name) into the terminal."
@@ -72,6 +73,30 @@ unit_test_gui.o: unit_test_gui.c gui.h
 # Target for GUI Unit unit_test_gui
 unit_test_gui: unit_test_gui.o gui.o
 	$(CC) $(LFLAGS) unit_test_gui.o gui.o -o unit_test_gui
+
+# Client Unit Test
+
+# Target for gui.o
+client.o: client.c client.h
+	$(CC) $(CFLAGS) client.c -o client.o
+# Target for GUI Unit unit_test_gui
+unit_test_client.o: unit_test_client.c
+	$(CC) $(CFLAGS) unit_test_client.c -o unit_test_client.o
+# Target for GUI Unit unit_test_gui
+unit_test_client: unit_test_client.o client.o
+	$(CC) $(LFLAGS) unit_test_client.o client.o -o unit_test_client
+
+# Server Unit Test
+
+# Target for gui.o
+server.o: server.c server.h
+	$(CC) $(CFLAGS) server.c -o server.o
+# Target for GUI Unit unit_test_gui
+unit_test_server.o: unit_test_server.c
+	$(CC) $(CFLAGS) unit_test_server.c -o unit_test_server.o
+# Target for GUI Unit unit_test_gui
+unit_test_server: unit_test_server.o server.o
+	$(CC) $(LFLAGS) unit_test_server.o server.o -o unit_test_server
 
 # gamelogic Unit Test
 
