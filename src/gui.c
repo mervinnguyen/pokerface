@@ -36,7 +36,18 @@ static GtkWidget *create_poker_card(char *poker_card_file_path)
 
     // Load the image into a the poker_card GdkPixbuf
     poker_card = gdk_pixbuf_new_from_file(poker_card_file_path, NULL);
-    if (!poker_card)
+    if (poker_card)
+	{
+		// Resize the poker_card to the set card size
+		poker_card = gdk_pixbuf_scale_simple(poker_card, CARD_WIDTH, CARD_HEIGHT, GDK_INTERP_BILINEAR);
+		// Create a GtkImage widget with the resized pixbuf
+		image = gtk_image_new_from_pixbuf(poker_card);
+		// Free the pixbuf as it's no longer needed
+		g_object_unref(poker_card); 
+		// Return the GTK image
+		return image;
+	}
+	else
 	{
 		// Prints error to standard error stream
         fprintf(stderr, "The poker card image can't be loaded!\n");
@@ -45,14 +56,6 @@ static GtkWidget *create_poker_card(char *poker_card_file_path)
     	gtk_frame_set_shadow_type(GTK_FRAME(image), GTK_SHADOW_IN);
         return image;
     }
-    // Resize the poker_card to the set card size
-    poker_card = gdk_pixbuf_scale_simple(poker_card, CARD_WIDTH, CARD_HEIGHT, GDK_INTERP_BILINEAR);
-    // Create a GtkImage widget with the resized pixbuf
-    image = gtk_image_new_from_pixbuf(poker_card);
-	// Free the pixbuf as it's no longer needed
-	g_object_unref(poker_card); 
-	// Return the GTK image
-    return image;
 }
 
 // int atoi_card_rank(char *card_rank)
