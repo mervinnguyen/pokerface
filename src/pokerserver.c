@@ -49,9 +49,9 @@ char** initializeCards() {
     }
 
     // shapes
-    char* shapes[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
+    char* shapes[] = {"hearts", "diamonds", "clubs", "spades"};
     // marks
-    char* marks[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    char* marks[] = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "joker", "queen", "king"};
     int index = 0;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 13; ++j) {
@@ -61,7 +61,7 @@ char** initializeCards() {
                 exit(EXIT_FAILURE);
             }
             strcpy(card, marks[j]);
-            strcat(card, "-");
+            strcat(card, "_of_");
             strcat(card, shapes[i]);
             cards[index++] = card;
         }

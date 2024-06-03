@@ -40,6 +40,17 @@ test-gui:
 	@echo "GUI has been tested."
 	@echo ""
 
+# makes the comm unit_test and runs it
+test-comm:
+	(cd src/; make unit_test_client; make unit_test_server;cd ..)
+	cp src/unit_test_client bin/
+	cp src/unit_test_server bin/
+	(cd src/; ./unit_test_server 10080; cd ..)
+	(cd src/; ./unit_test_client 10080; cd ..)
+	@echo ""
+	@echo "GUI has been tested."
+	@echo ""
+
 # --transform 's|^|poker/|' is used to place all the files into a folder called poker
 tar:
 	gtar cvzf Poker_Beta.tar.gz --transform 's|^|poker/|' README COPYRIGHT INSTALL bin/ doc/Poker_UserManual.pdf
