@@ -21,6 +21,7 @@ Beta Version Notes:
 	- In the latest version of the client the GUI will open after cards are requested from server for pokerclient.
 	- The client side GUI is able to take input from the user and save the username and password in memory. It is also able to display dealer card inputs from the server.
  	- After the GUI has been closed with the 'X' the client is able to send messages to the server.
+	- IMPORTANT: In order for multi client functionality to be properly handled, please run the executable for the first client and then "login" for that client, and then proceed to run the executable for the second client, and then "login". This specific sequence of events is necessary in order for full functionality. 
 
 Currently Working On:
 	- Finishing up the GUI for the poker game on the client side.
