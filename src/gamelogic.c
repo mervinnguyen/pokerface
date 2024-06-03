@@ -79,6 +79,7 @@ typedef struct {
     int currentCall;
     int numPlayers;
     int currentPlayer;
+    int playerTurn;
     int numGames;
     int dealer;
     int smallBlind;
@@ -149,6 +150,32 @@ void dealCards(Game *game)
     }
     game->communityCards.top = 5;
 }
+
+int EqualBids(Game *game){
+    int currentBid;
+    int firstPlayer;
+
+    //find the first player in play and record their bid
+    for (int i = 0; i < game->numPlayers; i++){
+        if (game->players[game->playerTurn].move != FOLD){
+            firstPlayer = i;
+            currentBid = game->players[i].bet;
+            break;
+        }
+    }
+
+    //check if all players have the same bid
+    for (int i = firstPlayer + 1; i < game->numPlayers; i++){
+        if (game->players[game->playerTurn].move != FOLD){
+            if (game->players[i].bet != currentBid){
+                return 0;
+            }
+        }
+    }
+
+    return 1;
+}
+
 int Winner (Game *game){
     int winner = 0;
     int highestPriority = 0;
