@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #define PORT_NUMBER_LOWER_BOUND 1024
 
@@ -15,9 +17,9 @@ void getPortNum(int argc, char *const *argv, int* portNum);
 
 void test_getPortNum_valid_port() {
     int portNum;
-    char *args[] = {"program", "hostname", "1234"};
+    char *args[] = {"program", "hostname", "10080"};
     getPortNum(3, args, &portNum);
-    assert(portNum == 1234);
+    assert(portNum == 10080);
     printf("test_getPortNum_valid_port passed.\n");
 }
 
