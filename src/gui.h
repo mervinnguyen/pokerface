@@ -12,8 +12,9 @@
 #include <stdbool.h>
 
 // Contstants will be moved to constants.h later
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+// Window width & height is divided by 1.5 for ease of programming on a smaller screen
+#define WINDOW_WIDTH 1280/1.5
+#define WINDOW_HEIGHT 720/1.5
 #define CARD_WIDTH (WINDOW_WIDTH/15)
 #define CARD_HEIGHT (WINDOW_HEIGHT/6)
 #define NUMBER_OF_SEATS 4

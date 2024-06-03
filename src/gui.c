@@ -82,7 +82,6 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[], char dealt_cards[5][STRI
 		get_card_file_path(dealt_cards[i]);
 		printf("File_Path: %s\n", dealt_cards[i]);
 	}
-	
 
 	// GTK Variables
 	GtkWidget *Client_WINDOW = NULL;				// Main client window

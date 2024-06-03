@@ -2,7 +2,8 @@
 /* Poker Project, for EECS 22L, Spring 2024                   		 */
 /* unit_test_gui.c: Unit test for GUI	                             */
 /*********************************************************************/
-
+// #include <unistd.h>
+// #include <time.h>
 #include "gui.h"
 
 /*
@@ -32,6 +33,18 @@ Control Flow for Client Side GUI:
 	Therefore the GUI will only update when it's in the game state and won't update if it timesout.
 */
 
+// // UpdateWindow From Prof Doemer's Sample Code
+// void UpdateWindow(void)		/* render the window on screen */
+// {
+//    /* this server has it's own main loop for handling client connections;
+//     * as such, it can't have the usual GUI main loop (gtk_main);
+//     * instead, we call this UpdateWindow function on regular basis
+//     */
+//     while(gtk_events_pending())
+//     {
+// 	gtk_main_iteration();
+//     }
+// } /* end of UpdateWindow */
 
 int main (int argc, char *argv[])
 {
@@ -42,11 +55,6 @@ int main (int argc, char *argv[])
 	// Note: Inputing incorrect string notation will result in a card shadow to be created instead on the GUI
 	// Notation: RANK_of_SUIT; ex: ace_of_spades
 	char dealt_cards[5][STRING_BUFFER] = {"ace_of_spades", "8_of_hearts", "jack_of_diamonds", "4_of_clubs","10_of_spades"};
-
-	// for (int i = 0; i < 5; i++)
-	// {
-	// 	printf("%s\n", dealt_cards[i]);
-	// }
 
 	// Creates a GUI for client
 	window = CreateClientWindow(&argc, &argv, dealt_cards);
@@ -59,9 +67,21 @@ int main (int argc, char *argv[])
 		return 1;
     }
 
+	// Update the GUI window every 0.25 seconds while the window is alive
+	// int timeout = 250000;
+	// while(!window)
+	// {	
+	// 	UpdateWindow();
+	// 	printf("Sleeping for 0.25 seconds...\n");
+	// 	sleep(1); // 250,000 microseconds = 0.25 seconds
+	// 	printf("0.25 seconds have passed.\n");
+	// }
+
 	// No Errors
 	return 0 ;
 }
+
+
 
 
 
