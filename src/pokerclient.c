@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	GtkWidget *window = NULL;	// Main window
 	
 	// Array used to print the dealer cards on the poker table in the GUI. Note: Inputing incorrect string notation will result in a card shadow to be created instead on the GUI. Notation: RANK_of_SUIT; ex: ace_of_spades
-	char dealt_cards[5][STRING_BUFFER] = {"N_A", "N_A", "N_A", "N_A","N_A"};
+	char dealt_cards[5][STRING_BUFFER] = {"ace_of_spades", "8_of_hearts", "jack_of_diamonds", "4_of_clubs","10_of_spades"};
 
 	// Creates a GUI for client
 	window = CreateClientWindow(&argc, &argv, dealt_cards);
