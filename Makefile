@@ -48,7 +48,25 @@ test-comm:
 	(cd src/; ./unit_test_server 10080; cd ..)
 	(cd src/; ./unit_test_client 10080; cd ..)
 	@echo ""
-	@echo "GUI has been tested."
+	@echo "Communication between server and client has been tested."
+	@echo ""
+
+#makes the client unit_test and runs it
+test-client:
+	(cd src/; make unit_test_client; cd ..)
+	cp src/unit_test_client bin/
+	(cd src/; ./unit_test_client crystalcove 10080; cd ..)
+	@echo ""
+	@echo "Client side has been tested."
+	@echo ""
+
+#makes the server unit_test and runs it
+test-server:
+	(cd src/; make unit_test_server; cd ..)
+	cp src/unit_test_server bin/
+	(cd src/; ./unit_test_server 10080; cd ..)
+	@echo ""
+	@echo "Server side has been tested."
 	@echo ""
 
 # --transform 's|^|poker/|' is used to place all the files into a folder called poker
