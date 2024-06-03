@@ -203,9 +203,9 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[], char dealt_cards[5][STRI
 	CMM_input_TABLE_menu = gtk_table_new(2, 2, TRUE);
 	// Create labels for username and password input
 	CMM_LABEL_username = gtk_label_new(NULL);
-	// gtk_label_set_markup(GTK_LABEL(CMM_LABEL_username), "<span size='xx-large'>Username:</span>");
+	gtk_label_set_markup(GTK_LABEL(CMM_LABEL_username), "<span size='xx-large'>Username:</span>");
 	CMM_LABEL_password = gtk_label_new(NULL);
-	// gtk_label_set_markup(GTK_LABEL(CMM_LABEL_password), "<span size='xx-large'>Password:</span>");
+	gtk_label_set_markup(GTK_LABEL(CMM_LABEL_password), "<span size='xx-large'>Password:</span>");
 	// Change Label Color
     gdk_color_parse("#ffffff", &Client_white_font_COLOR);
     gtk_widget_modify_fg(CMM_LABEL_username, GTK_STATE_NORMAL, &Client_white_font_COLOR);
@@ -229,7 +229,7 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[], char dealt_cards[5][STRI
 	// Create a combo box text so that users can select a seat
 	CMM_COMBO_seat_dropdown = gtk_combo_box_new_text();
 	// Populate options for the seat dropdown selection 
-	for (int i; i < NUMBER_OF_SEATS; i++)
+	for (int i = 0; i < NUMBER_OF_SEATS; i++)
 	{
 		seat[5] = '1' + i; 
 		// printf("%s\n", seat);
@@ -263,7 +263,7 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[], char dealt_cards[5][STRI
 
 	// Create a label that displays the ASCII main menu
 	CGM_menu_LABEL = gtk_label_new(NULL);
-	// gtk_label_set_markup(GTK_LABEL(CGM_menu_LABEL), "<span size='xx-large'>Placeholder</span>");
+	gtk_label_set_markup(GTK_LABEL(CGM_menu_LABEL), "<span size='xx-large'>Placeholder</span>");
 	gtk_widget_modify_fg(CGM_menu_LABEL, GTK_STATE_NORMAL, &Client_white_font_COLOR);
 	gtk_label_set_line_wrap(GTK_LABEL(CGM_menu_LABEL), TRUE);
 	gtk_label_set_justify(GTK_LABEL(CGM_menu_LABEL), GTK_JUSTIFY_CENTER);
