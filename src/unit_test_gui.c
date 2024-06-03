@@ -38,13 +38,23 @@ int main (int argc, char *argv[])
 	// GTK Variables
 	GtkWidget *window = NULL;	// Main window
 	
+	// Array used to print the dealer cards on the poker table in the GUI
+	// Note: Inputing incorrect string notation will result in a card shadow to be created instead on the GUI
+	// Notation: RANK_of_SUIT; ex: ace_of_spades
+	char dealt_cards[5][STRING_BUFFER] = {"ace_of_spades", "8_of_hearts", "jack_of_diamonds", "4_of_clubs","10_of_spades"};
+
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	printf("%s\n", dealt_cards[i]);
+	// }
+
 	// Creates a GUI for client
-	window = CreateClientWindow(&argc, &argv);
+	window = CreateClientWindow(&argc, &argv, dealt_cards);
 	// Checks that a window pointer has been returned
 	if (!window)
     {
 		// Prints error to standard error stream
-		fprintf(stderr, "GTKWidget ointer to window has not been returned.\n");
+		fprintf(stderr, "GTKWidget pointer to window has not been returned.\n");
         // Error Code #1
 		return 1;
     }
