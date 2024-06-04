@@ -17,7 +17,7 @@ int main()
 {
     Deck deck;
     Game game;
-    Player player
+    Player player;
 
     int numPlayers = 4;
     int smallBlind = 10;
