@@ -41,7 +41,7 @@ int main()
 
     dealCards(&game);
     
-    initGame(&game);
+    initGame(&game, numPlayers);
     startGame(&game);
 
     displayPlayerCards(&player);
