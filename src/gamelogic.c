@@ -3,7 +3,105 @@
 /* gamelogic.c: source file for the poker game logic				 */
 /*********************************************************************/
 
+<<<<<<< HEAD
 #include "gamelogic.h"
+=======
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "gamelogic.h"
+
+#define NUM_CARDS 52
+#define CARDS_PER_PLAYER 2
+#define NUM_RANKS 13
+
+//Assign values to face cards
+typedef enum{
+    TWO = 2,
+    THREE = 3,
+    FOUR = 4,
+    FIVE = 5,
+    SIX = 6,
+    SEVEN = 7,
+    EIGHT = 8,
+    NINE = 9,
+    TEN = 10,
+    JACK = 11,
+    QUEEN = 12,
+    KING = 13,
+    ACE = 14
+}RANK;
+
+typedef enum {
+    PREFLOP = 0,
+    FLOP = 1,
+    TURN = 2,
+    RIVER = 3
+}ROUND;
+
+typedef enum {
+    SMALL_BLIND = 0,
+    BIG_BLIND = 1,
+    REGULAR = 2
+}BLIND;
+
+typedef struct {
+	SUIT suit;
+	RANK rank;
+}Card;
+
+typedef struct {
+	struct Card cards[5];
+}Hand;
+
+typedef struct {
+	struct Card cards[NUM_CARDS];
+	int top;
+}Deck;
+
+typedef enum {
+    FOLD = 0,
+    CHECK = 1,
+    CALL = 2,
+    RAISE = 3
+}Moves;
+
+typedef struct {
+    int chips;
+    int bet;
+    int raise;
+    Card card1;
+    Card card2;
+    Moves move;
+}Player;
+
+//create a struct for the state of the game
+typedef struct {
+    int pot;
+    ROUND round;
+    int currentCall;
+    int numPlayers;
+    int currentPlayer;
+    int playerTurn;
+    int numGames;
+    int dealer;
+    int smallBlind;
+    int bigBlind;
+    int raise;
+    int maxBet;
+    int minBet;
+    int maxRaise;
+    int minRaise;
+    int numFolded;
+    int numCalled;
+    int numRaised;
+    int numChecked;
+    int numAllIn;
+    Player players[7];
+    Deck shuffleDeck;
+    Deck communityCards;
+}Game;
+>>>>>>> mervin
 
 const char *suits[] = {"Hearts", "Diamonds", "Clubs", "Spades"};
 const char *ranks[] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
@@ -55,6 +153,104 @@ void dealCards(Game *game)
         game->communityCards.cards[i] = game->shuffleDeck.cards[deckIndex++];
     }
     game->communityCards.top = 5;
+}
+
+int EqualBids(Game *game){
+    int currentBid;
+    int firstPlayer;
+
+    //find the first player in play and record their bid
+    for (int i = 0; i < game->numPlayers; i++){
+        if (game->players[game->playerTurn].move != FOLD){
+            firstPlayer = i;
+            currentBid = game->players[i].bet;
+            break;
+        }
+    }
+
+    //check if all players have the same bid
+    for (int i = firstPlayer + 1; i < game->numPlayers; i++){
+        if (game->players[game->playerTurn].move != FOLD){
+            if (game->players[i].bet != currentBid){
+                return 0;
+            }
+        }
+    }
+
+    return 1;
+}
+
+int Winner (Game *game){
+    int winner = 0;
+    int highestPriority = 0;
+    for (int i = 0; i < game->numPlayers; ++i){
+        int priority = CheckPlayer(game, i);
+        if (priority > highestPriority){
+            highestPriority = priority;
+            winner = i;
+        }
+        else if (priority == highestPriority){
+                winner = -1;
+            
+        }
+    }
+    return winner;
+}
+
+Game *Tie (Game *game){
+    //find the priorities of each of the player
+    int priorities[7];
+    for (int i = 0; i < game->numPlayers; i++){
+        priorities[i] = CheckPlayer(game, i);
+    }
+
+    //pick the player with the highest priority
+    int maxPriorityValue;
+    int PlayersWhoTie = 0;
+    for (int i = 0; i < game->numPlayers; i++){
+        if (priorities[i] > maxPriorityValue){
+            maxPriorityValue = priorities[i];
+        }
+    }
+
+    //find number of players who tied
+    for (int i = 0; i < game->numPlayers; i++){
+        if (priorities[i] == maxPriorityValue){
+            PlayersWhoTie++;
+        }
+
+    //index for tied players
+    int tiedPlayers[7];
+    int j = 0;
+    for (int i = 0; i < game->numPlayers; i++){
+        if (priorities[i] == maxPriorityValue){
+            tiedPlayers[j] = i;
+            j++;
+        }
+    }
+
+    //distribute the pot among these players
+    int potToDistribute = game->pot / PlayersWhoTie;
+    for (int i = 0; i < PlayersWhoTie; i++){
+        game->players[tiedPlayers[i]].chips += potToDistribute;
+    }
+
+    return game;
+}
+
+int getMaxPriorityOfThePlayer(Game *game, int person){
+    int max = INT_MIN;
+    max = (max > CheckRoyalFlush(game, person)) ? max : CheckRoyalFlush(game, person);
+    max = (max > CheckStraightFlush(game, person)) ? max : CheckStraightFlush(game, person);
+    max = (max > CheckFourOfAKind(game, person)) ? max : CheckFourOfAKind(game, person);
+    max = (max > CheckFullHouse(game, person)) ? max : CheckFullHouse(game, person);
+    max = (max > CheckFlush(game, person)) ? max : CheckFlush(game, person);
+    max = (max > CheckStraight(game, person)) ? max : CheckStraight(game, person);
+    max = (max > CheckThreeOfAKind(game, person)) ? max : CheckThreeOfAKind(game, person);
+    max = (max > CheckTwoPair(game, person)) ? max : CheckTwoPair(game, person);
+    max = (max > CheckPair(game, person)) ? max : CheckPair(game, person);
+    max = (max > CheckHighCard(game, person)) ? max : CheckHighCard(game, person);
+    return max;
 }
 
 int CheckPlayer(Game *game, int player){
