@@ -1,27 +1,16 @@
-/*********************************************************************/
-/* Poker Project, for EECS 22L, Spring 2024                     	 */
-/* gamelogic.h: gamelogic header file								 */
-/*********************************************************************/
-
-#ifndef POKER_H
-#define POKER_H
-
-#include <stdio.h>
+#ifndef GAMELOGIC_H
+#define GAMELOGIC_H
 #include <stdlib.h>
-#include <time.h>
+#include <stdbool.h>
 
-#define NUM_CARDS 52
-#define CARDS_PER_PLAYER 2
-#define NUM_RANKS 13
-
-typedef enum {
+typedef enum{
     SPADES = 0,
     CLUBS = 1,
     DIAMONDS = 2,
     HEARTS = 3
-} SUIT;
+}SUIT;
 
-typedef enum {
+typedef enum{
     TWO = 2,
     THREE = 3,
     FOUR = 4,
@@ -35,41 +24,37 @@ typedef enum {
     QUEEN = 12,
     KING = 13,
     ACE = 14
-} RANK;
+}RANK;
 
 typedef enum {
     PREFLOP = 0,
     FLOP = 1,
     TURN = 2,
     RIVER = 3
-} ROUND;
+}ROUND;
 
 typedef enum {
     SMALL_BLIND = 0,
     BIG_BLIND = 1,
     REGULAR = 2
-} BLIND;
+}BLIND;
 
 typedef struct {
-    SUIT suit;
-    RANK rank;
-} Card;
+	SUIT suit;
+	RANK rank;
+}Card;
 
 typedef struct {
-    Card cards[5];
-} Hand;
-
-typedef struct {
-    Card cards[NUM_CARDS];
-    int top;
-} Deck;
+	struct Card cards[NUM_CARDS];
+	int top;
+}Deck;
 
 typedef enum {
     FOLD = 0,
     CHECK = 1,
     CALL = 2,
     RAISE = 3
-} Moves;
+}Moves;
 
 typedef struct {
     int chips;
@@ -78,8 +63,9 @@ typedef struct {
     Card card1;
     Card card2;
     Moves move;
-} Player;
+}Player;
 
+//create a struct for the state of the game
 typedef struct {
     int pot;
     ROUND round;
@@ -103,6 +89,7 @@ typedef struct {
     Player players[7];
     Deck shuffleDeck;
     Deck communityCards;
+<<<<<<< HEAD
 } Game;
 
 extern const char *suits[];
@@ -134,4 +121,7 @@ void displayCommunityCards(Deck *communityCards);
 
 
 #endif // POKER_H
+=======
+}Game;
+>>>>>>> mervin
 
