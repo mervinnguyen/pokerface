@@ -1,22 +1,22 @@
 README
 Version:
-	-Pokerface v2024.06.03
+	-Pokerface v2024.06.10
 	© 2004 - 2024 PretendGINEERS. All Rights Reserved.
 Authors:
 	-Mharlo Borromeo, Jack Lu, Calvin Nguyen, Mervin Nguyen, Peter Nguyen, Derek Tang
 Last modified:
-	-27 May 2024
+	-10 June 2024
 
 General Instructions:
 	- Please follow the instructions stated in the INSTALL file for detailed instructions on how to install (downloading .tar files, unpack/extract using gtar) and run the program.
 	- To run the program navigate to the "bin/" directory and run the main executatables on different servers/accounts.
 	- In order to start connect the client to the server's port then connect the server to the port the client is connected to.
 	Ex:
-		- Step #1: Run "./pokerclient crystalcove 10080" on a different server"
-		- Step #2: Run "./pokerserver 10080" on the server crystalcove
+		- Step #1: Run "./pokerserver [port number]" on an SSH client, taking care to use ports 10080-10089.
+		- Step #2: On a difference instance of an SSH client or in a separate SSH client, run "./pokerclient [hostname] [port number]" to connect to the running server, taking care to use ports 10080-10089. 
 	- After executing ./pokerclient use the ASCII interface to send messages to the server.
 
-Beta Version Notes:
+V1.0 Version Notes:
 	- IMPORTANT: In order for multi client functionality to be properly handled, please run the executable for the first client and then "login" for that client, and then proceed to run the executable for the second client, and then "login". (or exit the gui for each client) This specific sequence of events is necessary in order for full functionality. 
 	- There is a known error regarding Pango-WARNING (Invalid UTF-8 string) if this does happen please "make clean" and try again as it seems to occur sometime on executables which have run fine earlier. [It occurs when the client is run after the server is already open]
 	- In the latest version of the client the GUI will open before pokerclient connects to pokerserver.
