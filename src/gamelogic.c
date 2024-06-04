@@ -247,7 +247,7 @@ int CheckThreeOfAKind(Game *game, int player){
     }
 }
 
-int CheckTwoPair(Game *game, int player){
+int CheckTwoPair(Game *ame, int player){
     Deck *NewDeck;
     int a, b, c, d, e, f, g, i;
         for (i=0; i<5; i++){
