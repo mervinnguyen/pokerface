@@ -110,6 +110,7 @@ extern const char *ranks[];
 
 void makeDeck(Deck *deck);
 void shuffleDeck(Deck *deck);
+void printDeck(Deck *deck);
 void dealCards(Game *game);
 int CheckPlayer(Game *game, int player);
 int CheckRoyalFlush(Game *game, int player);
