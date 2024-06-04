@@ -16,25 +16,25 @@ int main(int argc, char *argv[])
 	printf("Dealer Cards:\nCard 1: %s, Card 2: %s, Card 3: %s, Card 4: %s, Card 5: %s\n", dealt_cards[0], dealt_cards[1], dealt_cards[2], dealt_cards[3], dealt_cards[4]);
 
 	// Testing
-	// char *testing = "Card 1: king_of_diamonds, Card 2: queen_of_diamonds";
-	// char card_1[100] = "back_card";
-	// char card_2[100] = "back_card";
-	// char card_3[100] = "back_card";
-	// char card_4[100] = "back_card";
-	// char card_5[100] = "back_card";
-	// // Copying strings
-	// printf("inital string: %s\n", testing);
-	// // Use sscanf to extract substrings
-    // if (sscanf(testing, "Card 1: %100[^,], Card 2: %100[^,]", card_1, card_2) == 2)
-	// {
-    //     printf("Card 1: %s\n", card_1);
-    //     printf("Card 2: %s\n", card_2);
-	// 	strncpy(dealt_cards[0], card_1, 100);
-	// 	strncpy(dealt_cards[1], card_2, 100);
-	// 	strncpy(dealt_cards[2], card_3, 100);
-	// 	strncpy(dealt_cards[3], card_4, 100);
-	// 	strncpy(dealt_cards[4], card_5, 100);
-    // }
+	char *testing = "Card 1: king_of_diamonds, Card 2: queen_of_diamonds";
+	char card_1[100] = "back_card";
+	char card_2[100] = "back_card";
+	char card_3[100] = "back_card";
+	char card_4[100] = "back_card";
+	char card_5[100] = "back_card";
+	// Copying strings
+	printf("inital string: %s\n", testing);
+	// Use sscanf to extract substrings
+    if (sscanf(testing, "Card 1: %100[^,], Card 2: %100[^,]", card_1, card_2) == 2)
+	{
+        printf("Card 1: %s\n", card_1);
+        printf("Card 2: %s\n", card_2);
+		strncpy(dealt_cards[0], card_1, 100);
+		strncpy(dealt_cards[1], card_2, 100);
+		strncpy(dealt_cards[2], card_3, 100);
+		strncpy(dealt_cards[3], card_4, 100);
+		strncpy(dealt_cards[4], card_5, 100);
+    }
 	
 	// Creates a GUI for client
 	window = CreateClientWindow(&argc, &argv, dealt_cards);
