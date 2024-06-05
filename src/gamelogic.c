@@ -5,6 +5,7 @@
 
 #include "gamelogic.h"
 #include "time.h"
+#include <stdio.h>
 
 void makeDeck(Deck *deck){
     int count = 0;
@@ -21,7 +22,6 @@ void makeDeck(Deck *deck){
 
 void shuffleDeck(Deck *deck)
 {
-    int i,j;
     srand(time(NULL));
     for (int i = NUM_CARDS - 1; i > 0; i--)
     {
@@ -411,7 +411,6 @@ int CheckPair(Game *game, int player){
 
 int CheckHighCard(Game *game, int player){
     Deck *NewDeck;
-    int a, b, c, d, e, f, g, i;
 
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
