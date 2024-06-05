@@ -88,7 +88,7 @@ typedef struct {
     int numRaised;
     int numChecked;
     int numAllIn;
-    Player players[7];
+    Player players[4];
     Deck shuffleDeck;
     Deck communityCards;
     int playerTurn;

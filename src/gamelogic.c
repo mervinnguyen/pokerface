@@ -61,7 +61,7 @@ int EqualBids(Game *game){
     int currentBid;
     int firstPlayer;
 
-    //find the first player in play and record their bid
+    //find the first player in play and record their bet
     for (int i = 0; i < game->numPlayers; i++){
         if (game->players[game->playerTurn].move != FOLD){
             firstPlayer = i;
@@ -101,7 +101,7 @@ int Winner (Game *game){
 
 Game *Tie (Game *game){
     //find the priorities of each of the player
-    int priorities[7];
+    int priorities[4];
     for (int i = 0; i < game->numPlayers; i++){
         priorities[i] = CheckPlayer(game, i);
     }
