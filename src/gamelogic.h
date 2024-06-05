@@ -47,7 +47,7 @@ typedef struct {
 }Card;
 
 typedef struct {
-	struct Card cards[NUM_CARDS];
+	Card cards[NUM_CARDS];
 	int top;
 }Deck;
 
@@ -91,7 +91,8 @@ typedef struct {
     Player players[7];
     Deck shuffleDeck;
     Deck communityCards;
-} Game;
+    int playerTurn;
+}Game;
 
 extern const char *suits[];
 extern const char *ranks[];

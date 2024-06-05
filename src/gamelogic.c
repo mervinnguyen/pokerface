@@ -21,6 +21,7 @@ void makeDeck(Deck *deck){
 
 void shuffleDeck(Deck *deck)
 {
+    int i,j;
     srand(time(NULL));
     for (int i = NUM_CARDS - 1; i > 0; i--)
     {
@@ -35,7 +36,7 @@ void printDeck(Deck *deck)
 {
     for (int i = 0; i < NUM_CARDS; i++)
     {
-        printf("%s of %s\n", ranks[deck->cards[i].rank], suits[deck->cards[i].suit]);
+        printf("Card %d: Suit %d, Rank %d\n", i+1, deck->cards[i].suit, deck->cards[i].rank);
     }
 }
 
@@ -118,16 +119,17 @@ Game *Tie (Game *game){
         if (priorities[i] == maxPriorityValue){
             PlayersWhoTie++;
         }
-
+    }
+    
     //index for tied players
     int tiedPlayers[7];
     int j = 0;
-    for (int i = 0; i < game->numPlayers; i++){
-        if (priorities[i] == maxPriorityValue){
-            tiedPlayers[j] = i;
-            j++;
+        for (int i = 0; i < game->numPlayers; i++){
+            if (priorities[i] == maxPriorityValue){
+                tiedPlayers[j] = i;
+                j++;
+            }
         }
-    }
 
     //distribute the pot among these players
     int potToDistribute = game->pot / PlayersWhoTie;
@@ -139,6 +141,7 @@ Game *Tie (Game *game){
 }
 
 int getMaxPriorityOfThePlayer(Game *game, int person){
+    int INT_MIN;
     int max = INT_MIN;
     max = (max > CheckRoyalFlush(game, person)) ? max : CheckRoyalFlush(game, person);
     max = (max > CheckStraightFlush(game, person)) ? max : CheckStraightFlush(game, person);
@@ -192,7 +195,6 @@ int CheckPlayer(Game *game, int player){
 int CheckRoyalFlush(Game *game, int player){
     Deck *NewDeck;
     int a, b, c, d, e, f, g, i;
-    int i = 0;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
     }
@@ -201,13 +203,13 @@ int CheckRoyalFlush(Game *game, int player){
 
     NewDeck = SortbyRank(NewDeck);
 
-    a = NewDeck->cards[0].RANK;
-    b = NewDeck->cards[1].RANK;
-    c = NewDeck->cards[2].RANK;
-    d = NewDeck->cards[3].RANK;
-    e = NewDeck->cards[4].RANK;
-    f = NewDeck->cards[5].RANK;
-    g = NewDeck->cards[6].RANK;
+    a = NewDeck->cards[0].rank;
+    b = NewDeck->cards[1].rank;
+    c = NewDeck->cards[2].rank;
+    d = NewDeck->cards[3].rank;
+    e = NewDeck->cards[4].rank;
+    f = NewDeck->cards[5].rank;
+    g = NewDeck->cards[6].rank;
 
     if ((a == 10 && b == 11 && c == 12 && d == 13 && e == 14) || (b == 10 && c == 11 && d == 12 && e == 13 && f == 14) || (c == 10 && d == 11 && e == 12 && f == 13 && g == 14)){
         return 1;
@@ -237,13 +239,13 @@ int CheckFourOfAKind(Game *game, int player){
 
     NewDeck = SortbyRank(NewDeck);
 
-    a = NewDeck->cards[0].RANK;
-    b = NewDeck->cards[1].RANK;
-    c = NewDeck->cards[2].RANK;
-    d = NewDeck->cards[3].RANK;
-    e = NewDeck->cards[4].RANK;
-    f = NewDeck->cards[5].RANK;
-    g = NewDeck->cards[6].RANK;
+    a = NewDeck->cards[0].rank;
+    b = NewDeck->cards[1].rank;
+    c = NewDeck->cards[2].rank;
+    d = NewDeck->cards[3].rank;
+    e = NewDeck->cards[4].rank;
+    f = NewDeck->cards[5].rank;
+    g = NewDeck->cards[6].rank;
 
     if ((a == b && b == c && c == d) || (b == c && c == d && d == e) || (c == d && d == e && e == f) || (d == e && e == f && f == g)){
         return 1;
@@ -273,13 +275,13 @@ int CheckFlush(Game *game, int player){
 
     NewDeck = SortbySuit(NewDeck);
 
-    a = NewDeck->cards[0].SUIT;
-    b = NewDeck->cards[1].SUIT;
-    c = NewDeck->cards[2].SUIT;
-    d = NewDeck->cards[3].SUIT;
-    e = NewDeck->cards[4].SUIT;
-    f = NewDeck->cards[5].SUIT;
-    g = NewDeck->cards[6].SUIT;
+    a = NewDeck->cards[0].suit;
+    b = NewDeck->cards[1].suit;
+    c = NewDeck->cards[2].suit;
+    d = NewDeck->cards[3].suit;
+    e = NewDeck->cards[4].suit;
+    f = NewDeck->cards[5].suit;
+    g = NewDeck->cards[6].suit;
 
     if ((a == b && b == c && c == d && d == e) || (b == c && c == d && d == e && e == f) || (c == d && d == e && e == f && f == g)){
         return 1;
@@ -300,13 +302,13 @@ int CheckStraight(Game *game, int player){
 
     NewDeck = SortbyRank(NewDeck);
 
-    a = NewDeck->cards[0].RANK;
-    b = NewDeck->cards[1].RANK;
-    c = NewDeck->cards[2].RANK;
-    d = NewDeck->cards[3].RANK;
-    e = NewDeck->cards[4].RANK;
-    f = NewDeck->cards[5].RANK;
-    g = NewDeck->cards[6].RANK;
+    a = NewDeck->cards[0].rank;
+    b = NewDeck->cards[1].rank;
+    c = NewDeck->cards[2].rank;
+    d = NewDeck->cards[3].rank;
+    e = NewDeck->cards[4].rank;
+    f = NewDeck->cards[5].rank;
+    g = NewDeck->cards[6].rank;
 
     if ((e == d+1 && d == c+1 && c == b+1 && b == a+1) || (f == e+1 && e == d+1 && d == c+1 && c == b+1) || (g == f+1 && f == e+1 && e == d+1 && d == c+1)){
         return 1;
@@ -327,13 +329,13 @@ int CheckThreeOfAKind(Game *game, int player){
 
     NewDeck = SortbyRank(NewDeck);
 
-    a = NewDeck->cards[0].RANK;
-    b = NewDeck->cards[1].RANK;
-    c = NewDeck->cards[2].RANK;
-    d = NewDeck->cards[3].RANK;
-    e = NewDeck->cards[4].RANK;
-    f = NewDeck->cards[5].RANK;
-    g = NewDeck->cards[6].RANK;
+    a = NewDeck->cards[0].rank;
+    b = NewDeck->cards[1].rank;
+    c = NewDeck->cards[2].rank;
+    d = NewDeck->cards[3].rank;
+    e = NewDeck->cards[4].rank;
+    f = NewDeck->cards[5].rank;
+    g = NewDeck->cards[6].rank;
 
     if ((a == b && b == c) || (b == c && c == d) || (c == d && d == e) || (d == e && e == f) || (e == f && f == g)){
         return 1;
@@ -357,13 +359,13 @@ int CheckTwoPair(Game *game, int player){
         //sort the deck by rank
         NewDeck = SortbyRank(NewDeck);
     
-        a = NewDeck->cards[0].RANK;
-        b = NewDeck->cards[1].RANK;
-        c = NewDeck->cards[2].RANK;
-        d = NewDeck->cards[3].RANK;
-        e = NewDeck->cards[4].RANK;
-        f = NewDeck->cards[5].RANK;
-        g = NewDeck->cards[6].RANK;
+        a = NewDeck->cards[0].rank;
+        b = NewDeck->cards[1].rank;
+        c = NewDeck->cards[2].rank;
+        d = NewDeck->cards[3].rank;
+        e = NewDeck->cards[4].rank;
+        f = NewDeck->cards[5].rank;
+        g = NewDeck->cards[6].rank;
 
         //write if statements for all ways that the a-g can have two pairs
         if ((a == b && ( c == d || d == e || e == f || f == g)) || (b == c && (a == d || d == e || e == f || f == g)) || (c == d && (e == f || f == g)) || (d == e && (f == g))){
@@ -390,13 +392,13 @@ int CheckPair(Game *game, int player){
     //sort the deck by rank
     NewDeck = SortbyRank(NewDeck);
 
-    a = NewDeck->cards[0].RANK;
-    b = NewDeck->cards[1].RANK;
-    c = NewDeck->cards[2].RANK;
-    d = NewDeck->cards[3].RANK;
-    e = NewDeck->cards[4].RANK;
-    f = NewDeck->cards[5].RANK;
-    g = NewDeck->cards[6].RANK;
+    a = NewDeck->cards[0].rank;
+    b = NewDeck->cards[1].rank;
+    c = NewDeck->cards[2].rank;
+    d = NewDeck->cards[3].rank;
+    e = NewDeck->cards[4].rank;
+    f = NewDeck->cards[5].rank;
+    g = NewDeck->cards[6].rank;
 
     //check if the player has a pair
     if ((a == b) || (b == c) || (c == d) || (d == e) || (e == f) || (f == g)){
@@ -422,13 +424,13 @@ int CheckHighCard(Game *game, int player){
     //sort the deck by rank
     NewDeck = SortbyRank(NewDeck);
 
-    a = NewDeck->cards[0].RANK;
-    b = NewDeck->cards[1].RANK;
-    c = NewDeck->cards[2].RANK;
-    d = NewDeck->cards[3].RANK;
-    e = NewDeck->cards[4].RANK;
-    f = NewDeck->cards[5].RANK;
-    g = NewDeck->cards[6].RANK;
+    a = NewDeck->cards[0].rank;
+    b = NewDeck->cards[1].rank;
+    c = NewDeck->cards[2].rank;
+    d = NewDeck->cards[3].rank;
+    e = NewDeck->cards[4].rank;
+    f = NewDeck->cards[5].rank;
+    g = NewDeck->cards[6].rank;
 
     //check if the player has a high card
 
