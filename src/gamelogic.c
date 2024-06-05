@@ -6,6 +6,7 @@
 #include "gamelogic.h"
 #include "time.h"
 #include <stdio.h>
+#include <limits.h>
 
 void makeDeck(Deck *deck){
     int count = 0;
@@ -141,7 +142,6 @@ Game *Tie (Game *game){
 }
 
 int getMaxPriorityOfThePlayer(Game *game, int person){
-    int INT_MIN;
     int max = INT_MIN;
     max = (max > CheckRoyalFlush(game, person)) ? max : CheckRoyalFlush(game, person);
     max = (max > CheckStraightFlush(game, person)) ? max : CheckStraightFlush(game, person);
@@ -192,8 +192,7 @@ int CheckPlayer(Game *game, int player){
     return priority;
 }
 
-int CheckRoyalFlush(Game *game, int player){
-    Deck *NewDeck;
+int CheckRoyalFlush(Game *game, int player, Deck *NewDeck){
     int a, b, c, d, e, f, g, i;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -411,8 +410,7 @@ int CheckPair(Game *game, int player){
 
 int CheckHighCard(Game *game, int player){
     Deck *NewDeck;
-
-    for (i=0; i<5; i++){
+    for (int i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
     }
 
@@ -423,68 +421,57 @@ int CheckHighCard(Game *game, int player){
     //sort the deck by rank
     NewDeck = SortbyRank(NewDeck);
 
-    a = NewDeck->cards[0].rank;
-    b = NewDeck->cards[1].rank;
-    c = NewDeck->cards[2].rank;
-    d = NewDeck->cards[3].rank;
-    e = NewDeck->cards[4].rank;
-    f = NewDeck->cards[5].rank;
-    g = NewDeck->cards[6].rank;
+    int a = NewDeck->cards[0].rank;
+    int b = NewDeck->cards[1].rank;
+    int c = NewDeck->cards[2].rank;
+    int d = NewDeck->cards[3].rank;
+    int e = NewDeck->cards[4].rank;
+    int f = NewDeck->cards[5].rank;
+    int g = NewDeck->cards[6].rank;
 
     //check if the player has a high card
 
-    //if f or g is a 2, return 2
-    if (f == 2 || g == 2){
-        return 2;
-    }
-    //if f or g is a 3, return 3
-    else if (f == 3 || g == 3){
-        return 3;
-    }
-    //if f or g is a 4, return 4
-    else if (f == 4 || g == 4){
-        return 4;
-    }
-    //if f or g is a 5, return 5
-    else if (f == 5 || g == 5){
-        return 5;
-    }
-    //if f or g is a 6, return 6
-    else if (f == 6 || g == 6){
-        return 6;
-    }
-    //if f or g is a 7, return 7
-    else if (f == 7 || g == 7){
-        return 7;
-    }
-    //if f or g is a 8, return 8
-    else if (f == 8 || g == 8){
-        return 8;
-    }
-    //if f or g is a 9, return 9
-    else if (f == 9 || g == 9){
-        return 9;
-    }
-    //if f or g is a 10, return 10
-    else if (f == 10 || g == 10){
-        return 10;
-    }
-    //if f or g is a 11, return 11
-    else if (f == 11 || g == 11){
-        return 11;
-    }
-    //if f or g is a 12, return 12
-    else if (f == 12 || g == 12){
-        return 12;
-    }
-    //if f or g is a 13, return 13
-    else if (f == 13 || g == 13){
-        return 13;
-    }
-    //if f or g is a 14, return 14
-    else if (f == 14 || g == 14){
+    if (NewDeck->cards[6].rank == 14){
         return 14;
     }
+    if(NewDeck->cards[6].rank == 13){
+        return 13;
+    }
+    if(NewDeck->cards[6].rank == 12){
+        return 12;
+    }
+    if(NewDeck->cards[6].rank == 11){
+        return 11;
+    }
+    if(NewDeck->cards[6].rank == 10){
+        return 10;
+    }
+    if(NewDeck->cards[6].rank == 9){
+        return 9;
+    }
+    if(NewDeck->cards[6].rank == 8){
+        return 8;
+    }
+    if(NewDeck->cards[6].rank == 7){
+        return 7;
+    }
+    if(NewDeck->cards[6].rank == 6){
+        return 6;
+    }
+    if(NewDeck->cards[6].rank == 5){
+        return 5;
+    }
+    if(NewDeck->cards[6].rank == 4){
+        return 4;
+    }
+    if(NewDeck->cards[6].rank == 3){
+        return 3;
+    }
+    if(NewDeck->cards[6].rank == 2){
+        return 2;
+    }
+    return 0;
+
 }
 
 
