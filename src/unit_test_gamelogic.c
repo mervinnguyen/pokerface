@@ -8,7 +8,7 @@
 // made a function to itterate through the deck and print
 
 void printcurrentDeck(const Deck *deck) {
-    for (int i = 0; i < 52; i++) {
+    for (int i = 0; i < NUM_CARDS; ++i) {
         printf("Card %d: Suit %d, Rank %d\n", i+1, deck->cards[i].suit, deck->cards[i].rank);
     }
 }

@@ -667,7 +667,7 @@ void startGame(Game *game)
 
 void displayPlayerCards(Player *player)
 {
-    printf("Player's cards are: %s of %s, %s of %s\n", ranks[player->card1.rank - 2], suits[player->card1.suit], ranks[player->card2.rank - 2], suits[player->card2.suit]);
+    printf("Player Cards: %s of %s, %s of %s\n", ranks[player->card1.rank - 2], suits[player->card1.suit], ranks[player->card2.rank - 2], suits[player->card2.suit]);
 }
 
 void displayCommunityCards(Deck *communityCards) 
