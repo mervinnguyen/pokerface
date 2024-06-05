@@ -156,8 +156,7 @@ int getMaxPriorityOfThePlayer(Game *game, int person){
     return max;
 }
 
-int CheckPlayer(Game *game, int player){
-    int priority;
+int CheckPlayer(Game *game, int player, int priority){
     if(CheckRoyalFlush(game, player) == 1){
         priority = 10;
     }
@@ -227,8 +226,7 @@ int CheckStraightFlush(Game *game, int player){
     }
 }
 
-int CheckFourOfAKind(Game *game, int player){
-    Deck *NewDeck;
+int CheckFourOfAKind(Game *game, int player, Deck *NewDeck){
     int a, b, c, d, e, f, g, i;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -263,8 +261,7 @@ int CheckFullHouse(Game *game, int player){
     }
 }
 
-int CheckFlush(Game *game, int player){
-    Deck *NewDeck;
+int CheckFlush(Game *game, int player, Deck *NewDeck){
     int a, b, c, d, e, f, g, i;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -290,8 +287,7 @@ int CheckFlush(Game *game, int player){
     }
 }
 
-int CheckStraight(Game *game, int player){
-    Deck *NewDeck;
+int CheckStraight(Game *game, int player, Deck *NewDeck){
     int a, b, c, d, e, f, g, i;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -317,8 +313,7 @@ int CheckStraight(Game *game, int player){
     }
 }
 
-int CheckThreeOfAKind(Game *game, int player){
-    Deck *NewDeck;
+int CheckThreeOfAKind(Game *game, int player, Deck *NewDeck){
     int a, b, c, d, e, f, g, i;
     for (i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
@@ -344,8 +339,7 @@ int CheckThreeOfAKind(Game *game, int player){
     }
 }
 
-int CheckTwoPair(Game *game, int player){
-    Deck *NewDeck;
+int CheckTwoPair(Game *game, int player, Deck *NewDeck){
     int a, b, c, d, e, f, g, i;
         for (i=0; i<5; i++){
             NewDeck->cards[i] = game->communityCards.cards[i];
@@ -376,8 +370,7 @@ int CheckTwoPair(Game *game, int player){
         
 }
 
-int CheckPair(Game *game, int player){
-    Deck *NewDeck;
+int CheckPair(Game *game, int player, Deck *NewDeck){
     int a, b, c, d, e, f, g, i;
 
     for (i=0; i<5; i++){
@@ -408,8 +401,7 @@ int CheckPair(Game *game, int player){
     }
 }
 
-int CheckHighCard(Game *game, int player){
-    Deck *NewDeck;
+int CheckHighCard(Game *game, int player, Deck *NewDeck){
     for (int i=0; i<5; i++){
         NewDeck->cards[i] = game->communityCards.cards[i];
     }
