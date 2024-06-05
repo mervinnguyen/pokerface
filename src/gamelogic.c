@@ -123,7 +123,7 @@ Game *Tie (Game *game){
     }
     
     //index for tied players
-    int tiedPlayers[7];
+    int tiedPlayers[4];
     int j = 0;
         for (int i = 0; i < game->numPlayers; i++){
             if (priorities[i] == maxPriorityValue){
@@ -132,7 +132,7 @@ Game *Tie (Game *game){
             }
         }
 
-    //distribute the pot among these players
+    //split the pot among these players
     int potToDistribute = game->pot / PlayersWhoTie;
     for (int i = 0; i < PlayersWhoTie; i++){
         game->players[tiedPlayers[i]].chips += potToDistribute;
@@ -217,7 +217,7 @@ int CheckRoyalFlush(Game *game, int player){
     f = NewDeck->cards[5].rank;
     g = NewDeck->cards[6].rank;
 
-    if ((a == 10 && b == 11 && c == 12 && d == 13 && e == 14) || (b == 10 && c == 11 && d == 12 && e == 13 && f == 14) || (c == 10 && d == 11 && e == 12 && f == 13 && g == 14)){
+    if (CheckFlush(game, player) == 1 && CheckStraight(game, player) == 1 && c == 10 && d == 11 && e == 12 && f == 13 && g == 14){
         return 1;
     }
     else{
