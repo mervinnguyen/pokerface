@@ -220,6 +220,12 @@ int CheckRoyalFlush(Game *game, int player){
     if (CheckFlush(game, player) == 1 && CheckStraight(game, player) == 1 && c == 10 && d == 11 && e == 12 && f == 13 && g == 14){
         return 1;
     }
+    if (CheckFlush(game, player) == 1 && CheckStraight(game, player) == 1 && b == 10 && c == 11 && d == 12 && e == 13 && f == 14){
+        return 1;
+    }
+    if(CheckFlush(game, player) == 1 && CheckStraight(game, player) == 1 && a == 10 && b == 11 && c == 12 && d == 13 && e == 14){
+        return 1;
+    }
     else{
         return 0;
     }
