@@ -4,6 +4,7 @@
 /*********************************************************************/
 
 #include "gamelogic.h"
+#include <stdio.h>
 
 // made a function to itterate through the deck and print
 
