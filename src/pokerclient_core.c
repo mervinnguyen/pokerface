@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h> // Added
 
 #include "gui.h"
 #include "pokerclient_core.h"
@@ -24,3 +25,17 @@ void getPortNum(int argc, char *const *argv, int* portNum) {
     }
 }
 
+void *listenForMessages(void *arg) { // Added
+    int socketFD = *((int *)arg);
+    char recvBuffer[MAX_MESSAGE_LEN + 1];
+    int BytesReceived;
+
+    while (1) {
+        BytesReceived = read(socketFD, recvBuffer, sizeof(recvBuffer) - 1);
+        if (BytesReceived > 0) {
+            recvBuffer[BytesReceived] = '\0';
+            printf("Received message: %s\n", recvBuffer);
+        }
+    }
+    pthread_exit(NULL);
+}

@@ -74,6 +74,21 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    pthread_t listenerThread; // Added
+    int *socketPtr = malloc(sizeof(int)); // Added
+    if (socketPtr == NULL) { // Added
+        fprintf(stderr, "Memory allocation failed.\n"); // Added
+        close(socketFD); // Added
+        exit(EXIT_FAILURE); // Added
+    }
+    *socketPtr = socketFD; // Added
+    if (pthread_create(&listenerThread, NULL, listenForMessages, socketPtr) != 0) { // Added
+        fprintf(stderr, "Listener thread creation failed.\n"); // Added
+        close(socketFD); // Added
+        free(socketPtr); // Added
+        exit(EXIT_FAILURE); // Added
+    }
+
     char sendBuffer[MAX_MESSAGE_LEN + 1];
     char recvBuffer[MAX_MESSAGE_LEN + 1];
 
@@ -93,12 +108,14 @@ int main(int argc, char *argv[])
             int BytesSent = write(socketFD, sendBuffer, Length);
             if (BytesSent < 0) {
                 fprintf(stderr, "[%s] writing to socket failed\n", argv[0]);
+                close(socketFD); // Added
                 exit(EXIT_FAILURE);
             }
 
             int BytesReceived = read(socketFD, recvBuffer, sizeof(recvBuffer) - 1);
             if (BytesReceived < 0) {
                 fprintf(stderr, "[%s] reading from socket failed\n", argv[0]);
+                close(socketFD); // Added
                 exit(EXIT_FAILURE);
             }
             recvBuffer[BytesReceived] = '\0';
@@ -108,6 +125,9 @@ int main(int argc, char *argv[])
 
     printf("[%s] client is going to exit\n", argv[0]);
     close(socketFD);
+
+    pthread_cancel(listenerThread); // Added
+    free(socketPtr); // Added
 
     return 0;
 }
