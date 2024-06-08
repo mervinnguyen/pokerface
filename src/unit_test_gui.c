@@ -88,6 +88,8 @@ int main (int argc, char *argv[])
 		return 1;
     }
 
+	
+
 	// Update the GUI window every 0.25 seconds while the window is alive
 	// int timeout = 250000;
 	// while(!window)

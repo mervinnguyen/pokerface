@@ -349,7 +349,16 @@ GtkWidget *CreateClientWindow(int *argc, char **argv[], char dealt_cards[5][STRI
 	g_object_unref(pokerIcon);
 
 	// GTK set to sleep (GTK now waits until an event occurs)
-    gtk_main();
+    // gtk_main();
+	while (TRUE)
+	{
+        if (gtk_events_pending())
+		{
+            gtk_main_iteration();
+        }
+        // Perform other tasks here
+        // This could be a sleep or some computational task
+    }
 
 	printf("menu_state: %d\n",menu_state);
 	printf("Client Username: %s\n", client_username);
