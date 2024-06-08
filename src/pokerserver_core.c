@@ -1,6 +1,6 @@
 /*********************************************************************/
-/* Poker Project, for EECS 22L, Spring 2024                   		 */
-/* pokersever.c: Main file for the sever			                 */
+/* Poker Project, for EECS 22L, Spring 2024                   	     */
+/* pokersever.c: Main file for the sever	                     */
 /*********************************************************************/
 
 #include <stdio.h>
@@ -9,6 +9,7 @@
 #include <time.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <pthread.h> // Added for threading
 
 #include "pokerserver_core.h"
 
@@ -20,6 +21,9 @@
 */
 
 char clientCardsMap[CONCURRENT_CLIENT_NUM][MAX_CARDS_PER_CLIENT][MAX_MESSAGE_LEN + 1];
+int clientSockets[CONCURRENT_CLIENT_NUM]; // New addition
+pthread_mutex_t mapLock; // New addition for synchronizing access to clientCardsMap
+pthread_mutex_t socketLock; // New addition for synchronizing access to clientSockets
 
 int getPortNum(int argc, char *const *argv) {
     if (argc != 2) {
@@ -104,3 +108,139 @@ int getFirstCardsIndex(char cards[MAX_CARDS_PER_CLIENT][MAX_MESSAGE_LEN + 1], in
 
 time_t currentTime;
 
+void broadcastMessage(const char *message) {
+    pthread_mutex_lock(&socketLock);
+    for (int i = 0; i < CONCURRENT_CLIENT_NUM; ++i) {
+        if (clientSockets[i] != 0) {
+            write(clientSockets[i], message, strlen_without_null(message));
+        }
+    }
+    pthread_mutex_unlock(&socketLock);
+}
+
+void *clientRequestHandler(void *arg) {
+    int dataSocket = *((int *)arg);
+    free(arg); // Free the dynamically allocated socket descriptor
+
+    char receiveBuffer[MAX_MESSAGE_LEN + 1];
+    char sendBuffer[MAX_MESSAGE_LEN + 20];
+    int bytesReceived, bytesSent;
+
+    do {
+        bytesReceived = read(dataSocket, receiveBuffer, sizeof(receiveBuffer) - 1);
+        if (bytesReceived < 0) {
+            fprintf(stderr, "reading from data socket failed\n");
+            close(dataSocket);
+            pthread_exit(NULL);
+        }
+        receiveBuffer[bytesReceived] = '\0';
+        printf("message Received: %s\n", receiveBuffer);
+
+        if (strncmp(receiveBuffer, "bye", strlen_without_null(receiveBuffer)) == 0) {
+            sprintf(sendBuffer, "server bye");
+            bytesSent = write(dataSocket, sendBuffer, strlen_without_null(sendBuffer));
+            if (bytesSent < 0) {
+                fprintf(stderr, "writing to data socket failed\n");
+                close(dataSocket);
+                pthread_exit(NULL);
+            }
+            printf("Message Sent: %s\n", sendBuffer);
+            break;
+        } else if (strncmp(receiveBuffer, "shutdown", strlen_without_null(receiveBuffer)) == 0) {
+            sprintf(sendBuffer, "server shutdown");
+            bytesSent = write(dataSocket, sendBuffer, strlen_without_null(sendBuffer));
+            if (bytesSent < 0) {
+                fprintf(stderr, "writing to data socket failed\n");
+                close(dataSocket);
+                pthread_exit(NULL);
+            }
+            printf("Message Sent: %s\n", sendBuffer);
+            break;
+        } else if (strncmp(receiveBuffer, "current time", strlen_without_null(receiveBuffer)) == 0) {
+            time(&currentTime);
+            sprintf(sendBuffer, "Current time is: %s", ctime(&currentTime));
+            broadcastMessage(sendBuffer); // Broadcast the current time to all clients
+        } else if (strncmp(receiveBuffer, "give me cards", strlen_without_null(receiveBuffer)) == 0) {
+            pthread_mutex_lock(&mapLock); // Lock mutex for access
+            int cardIndex = getFirstCardsIndex(clientCardsMap[dataSocket], MAX_CARDS_PER_CLIENT);
+            if (cardIndex == -1) {
+                sprintf(sendBuffer, "No more cards to deal");
+            } else {
+                sprintf(sendBuffer, "Card 1: %s, Card 2: %s",
+                        clientCardsMap[dataSocket][cardIndex],
+                        clientCardsMap[dataSocket][cardIndex - 1]);
+                strcpy(clientCardsMap[dataSocket][cardIndex], "SENT");
+                strcpy(clientCardsMap[dataSocket][cardIndex - 1], "SENT");
+            }
+            pthread_mutex_unlock(&mapLock); // Unlock mutex after access
+        } else {
+            sprintf(sendBuffer, "server: invalid message '%s'", receiveBuffer);
+        }
+        bytesSent = write(dataSocket, sendBuffer, strlen_without_null(sendBuffer));
+        if (bytesSent < 0) {
+            fprintf(stderr, "writing to data socket failed\n");
+            close(dataSocket);
+            pthread_exit(NULL);
+        }
+        printf("Message Sent: %s\n", sendBuffer);
+    } while (strncmp(receiveBuffer, "shutdown", strlen_without_null(receiveBuffer)) != 0);
+
+    close(dataSocket);
+
+    // Remove client socket from the list
+    pthread_mutex_lock(&socketLock);
+    for (int i = 0; i < CONCURRENT_CLIENT_NUM; ++i) {
+        if (clientSockets[i] == dataSocket) {
+            clientSockets[i] = 0;
+            break;
+        }
+    }
+    pthread_mutex_unlock(&socketLock);
+
+    pthread_exit(NULL);
+}
+
+void *handleClient(void *arg) {
+    int dataSocket = *((int *)arg);
+    free(arg); // Free the dynamically allocated socket descriptor
+
+    pthread_mutex_lock(&mapLock); // Lock mutex
+    if (clientCardsMap[dataSocket][0][0] == '\0') {
+        char **cards = initializeCards();
+        for (int i = 0; i < MAX_CARDS_PER_CLIENT; ++i) {
+            strcpy(clientCardsMap[dataSocket][i], cards[i]);
+            free(cards[i]);
+        }
+        free(cards);
+        shuffleCards(clientCardsMap[dataSocket], MAX_CARDS_PER_CLIENT);
+    }
+    pthread_mutex_unlock(&mapLock); // Unlock mutex
+
+    // Add client socket to the list
+    pthread_mutex_lock(&socketLock);
+    for (int i = 0; i < CONCURRENT_CLIENT_NUM; ++i) {
+        if (clientSockets[i] == 0) {
+            clientSockets[i] = dataSocket;
+            break;
+        }
+    }
+    pthread_mutex_unlock(&socketLock);
+
+    pthread_t requestThread;
+    int *dataSocketPtr = malloc(sizeof(int));
+    if (dataSocketPtr == NULL) {
+        fprintf(stderr, "Memory allocation failed.\n");
+        close(dataSocket);
+        pthread_exit(NULL);
+    }
+    *dataSocketPtr = dataSocket;
+
+    if (pthread_create(&requestThread, NULL, clientRequestHandler, dataSocketPtr) != 0) {
+        fprintf(stderr, "request thread creation failed\n");
+        close(dataSocket);
+        free(dataSocketPtr);
+        pthread_exit(NULL);
+    }
+    pthread_detach(requestThread);
+    pthread_exit(NULL);
+}

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h> // Added
 
 #include "gui.h"
 
@@ -15,5 +16,6 @@
 #define PORT_NUMBER_LOWER_BOUND 1024
 
 void getPortNum(int argc, char *const *argv, int* portNum);
+void *listenForMessages(void *arg); // Added
 
 #endif
