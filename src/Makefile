@@ -101,7 +101,7 @@ gamelogic.o: gamelogic.c gamelogic.h
 	$(CC) $(CFLAGS) gamelogic.c -o gamelogic.o
 
 # Target for gamelogic unit_test_gamelogic
-unit_test_gamelogic.o: unit_test_gamelogic.c gamelogic.h
+unit_test_gamelogic.o: unit_test_gamelogic.c gamelogic.c gamelogic.h
 	$(CC) $(CFLAGS) unit_test_gamelogic.c -o unit_test_gamelogic.o
 
 # Target for gamelogic unit_test_gamelogic

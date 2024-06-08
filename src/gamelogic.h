@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define NUM_CARDS 52
+
 typedef enum{
     SPADES = 0,
     CLUBS = 1,
@@ -45,7 +47,7 @@ typedef struct {
 }Card;
 
 typedef struct {
-	struct Card cards[NUM_CARDS];
+	Card cards[NUM_CARDS];
 	int top;
 }Deck;
 
@@ -86,11 +88,11 @@ typedef struct {
     int numRaised;
     int numChecked;
     int numAllIn;
-    Player players[7];
+    Player players[4];
     Deck shuffleDeck;
     Deck communityCards;
-<<<<<<< HEAD
-} Game;
+    int playerTurn;
+}Game;
 
 extern const char *suits[];
 extern const char *ranks[];
@@ -121,7 +123,4 @@ void displayCommunityCards(Deck *communityCards);
 
 
 #endif // POKER_H
-=======
-}Game;
->>>>>>> mervin
 
