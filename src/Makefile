@@ -45,7 +45,7 @@ clean:
 # Main Executables
 
 # Target for pokerclient
-pokerclient: pokerclient.o pokerclient_core.o gui.o
+pokerclient: pokerclient.o pokerclient_core.o gui.o 
 	$(CC) $(LFLAGS) pokerclient.o pokerclient_core.o gui.o -o pokerclient
 
 # Target for pokerserver

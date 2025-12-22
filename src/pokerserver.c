@@ -4,6 +4,7 @@
 /*********************************************************************/
 
 #include "pokerserver_core.h"
+#include "gamelogic.h"
 
 int main(int argc, char *argv[]) {
     int serverSocket, dataSocket, portNum;
@@ -33,18 +34,21 @@ int main(int argc, char *argv[]) {
 
     printf("[%s] start listening on %d...\n", argv[0], portNum);
 
+
     pthread_mutex_init(&mapLock, NULL); // Initialize mutex
     pthread_mutex_init(&socketLock, NULL); // Initialize socket mutex
 
     memset(clientSockets, 0, sizeof(clientSockets)); // Initialize client sockets array
 
     while (1) {
+        //Wait for a client to connect
         dataSocket = accept(serverSocket, NULL, NULL);
         if (dataSocket < 0) {
             fprintf(stderr, "accept failed\n");
-            continue;
+            continue;   //Handle errors
         }
 
+        //Creating a new thread to handle client requests
         pthread_t clientThread;
         int *dataSocketPtr = malloc(sizeof(int));
         if (dataSocketPtr == NULL) {

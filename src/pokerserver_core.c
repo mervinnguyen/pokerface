@@ -44,7 +44,6 @@ int strlen_without_null(const char *str) {
     while (*str != '\0' && *str != '\n') {
         ++length;
         ++str;
-
     }
     return length;
 }

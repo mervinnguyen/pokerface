@@ -4,10 +4,10 @@
 /*********************************************************************/
 
 #include "pokerclient_core.h"
+#include "gamelogic.h"
 
 int main(int argc, char *argv[])
 {
-    
 	// GTK Variables
 	GtkWidget *window = NULL;	// Main window
 	
@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 	char card_3[100] = "back_card";
 	char card_4[100] = "back_card";
 	char card_5[100] = "back_card";
+
 	// Copying strings
 	printf("inital string: %s\n", testing);
 	// Use sscanf to extract substrings
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
 	if (!window)
     {
 		// Prints error to standard error stream
-		fprintf(stderr, "GTKWidget ointer to window has not been returned.\n");
+		fprintf(stderr, "GTKWidget pointer to window has not been returned.\n");
         // Error Code #1
 		return 1;
     }
